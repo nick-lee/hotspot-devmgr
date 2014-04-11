@@ -1,4 +1,5 @@
 /*
+ Add the template for Device Manager
  A countly view is defined as a page corresponding to a url fragment such 
  as #/manage/apps. This interface defines common functions or properties 
  the view object has. A view may override any function or property.
@@ -2349,6 +2350,41 @@ window.EventsView = countlyView.extend({
     }
 });
 
+window.DeviceMgrView = countlyView.extend({
+    initialize:function () {
+        this.template = Handlebars.compile($("#template-devicemgr-export").html());
+    }, /* register the event handler */
+    pageScript:function () {
+         $("#export-status-all").on('click', function () {
+            alert("select status");
+         });
+        
+    }, /* refresh the view */
+    renderCommon:function () {
+        /* render the view */
+        $(this.el).html(this.template({
+            events:countlyEvent.getEventsWithSegmentations(),
+            app_name:app.activeAppName,
+            exports:[]
+        }));
+        /* register the handler */
+        this.pageScript();
+
+	    $("#devicecfg_tabs").tabs({
+        select: function(event,ui) {
+        // You need Firebug or the developer tools on your browser open to see these
+        console.log(event);
+        // This will get you the index of the tab you selected
+        console.log(ui.index);
+        // And this will get you it's name
+    }
+        });	
+    }, /* refere the view if the subnetwork change */
+    appChanged:function () {
+        this.renderCommon();
+    }
+});
+
 var AppRouter = Backbone.Router.extend({
     routes:{
         "/":"dashboard",
@@ -2366,6 +2402,7 @@ var AppRouter = Backbone.Router.extend({
         "/analytics/durations":"durations",
         "/manage/apps":"manageApps",
         "/manage/users":"manageUsers",
+        "/devicemgr/config":"devicecfg",
         "*path":"main"
     },
     activeView:null, //current view
@@ -2421,6 +2458,9 @@ var AppRouter = Backbone.Router.extend({
     durations:function () {
         this.renderWhenReady(this.durationsView);
     },
+    devicecfg:function(){
+        this.renderWhenReady(this.devicesView);
+    },
     refreshActiveView:function () {
     }, //refresh interval function
     renderWhenReady:function (viewName) { //all view renders end up here
@@ -2466,10 +2506,12 @@ var AppRouter = Backbone.Router.extend({
         this.eventsView = new EventsView();
         this.resolutionsView = new ResolutionView();
         this.durationsView = new DurationView();
+        this.devicesView = new DeviceMgrView();
 
         Handlebars.registerPartial("date-selector", $("#template-date-selector").html());
         Handlebars.registerPartial("timezones", $("#template-timezones").html());
         Handlebars.registerPartial("app-categories", $("#template-app-categories").html());
+        Handlebars.registerPartial("status-box", $("#status-box-export").html());
         Handlebars.registerHelper('eachOfObject', function (context, options) {
             var ret = "";
             for (var prop in context) {

@@ -1,5 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,500&subset=latin,latin-ext);
-@import url(https://fonts.googleapis.com/css?family=Oswald:400,500&subset=latin,latin-ext);
+/*@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,500&subset=latin,latin-ext);*/
+@import url(/stylesheets/css.css);
+/*@import url(https://fonts.googleapis.com/css?family=Oswald:400,500&subset=latin,latin-ext); */
 body { margin:0; padding:0; overflow:auto; /*background-image:url('../images/dashboard/bg.png');*/ background-color:#F5F5F5; user-select:text; }
 #content-container { margin-left:224px; min-width:768px; padding:16px; }
 #content {  }
