@@ -1612,6 +1612,7 @@ window.ManageAppsView = countlyView.extend({
         }
 
         function showAdd() {
+            /* if it already present, return false */
             if ($("#app-container-new").is(":visible")) {
                 return false;
             }
@@ -1620,7 +1621,7 @@ window.ManageAppsView = countlyView.extend({
             hideEdit();
             var manageBarApp = $("#manage-new-app>div").clone();
             manageBarApp.attr("id", "app-container-new");
-            manageBarApp.addClass("active");
+            manageBarApp.addClass("active");    
 
             if (jQuery.isEmptyObject(countlyGlobal['apps'])) {
                 $("#cancel-app-add").hide();
@@ -2351,6 +2352,7 @@ window.EventsView = countlyView.extend({
 });
 
 window.DeviceMgrView = countlyView.extend({
+
     initialize:function () {
         this.template = Handlebars.compile($("#template-devicemgr-export").html());
     }, /* register the event handler */
@@ -2358,6 +2360,94 @@ window.DeviceMgrView = countlyView.extend({
          $("#export-status-all").on('click', function () {
             alert("select status");
          });
+
+         $("#update_fireware").click(function(){             
+             $("#badge_fireware_msg").css("background-color","#b94a48");  
+             $("#badge_fireware_msg").text("update");  
+         });
+
+         $("#reset_default").click(function(){
+             alert("reset default!");
+         });        
+
+         $("#devicemgr_button1").button();
+
+        $("#add-dev-button").click(function () {
+            var devName = "Test Hotspot 1";
+            alert("enter button click!")    
+
+            $("#dev-management-bar .app-container").removeClass("active");
+            $("#dev-management-bar .app-container[data-id='abc']").addClass("active");
+            var manageBarApp = $("#manage-new-dev>div").clone();
+            manageBarApp.attr("id", "dev-container-new");
+            manageBarApp.addClass("active");
+
+            $("#dev-management-bar .scrollable").append(manageBarApp);
+
+        });     
+        
+        $(".dev-container:not(#app-container-new)").live("click", function () {
+            /*
+            var appId = $(this).data("id");
+            hideEdit();
+            $(".app-container").removeClass("active");
+            $(this).addClass("active");
+            initAppManagement(appId);
+            */
+             $(".dev-container").removeClass("active");
+             $(this).addClass("active");
+        });
+
+    }, /* refresh the view */
+    renderCommon:function () {
+        /* render the view */   
+        $(this.el).html(this.template({
+            events:countlyEvent.getEventsWithSegmentations(),
+            app_name:app.activeAppName,
+            exports:[],
+            hotspot_name:"hotspot",
+            serial_num:"00:20:60:00:00:22",
+            hw_model:"SmartAd Model II",
+            register_time:"2009/08/08-21:00",
+            online_status:"在线",
+            fireware_ver:"1.0.8",
+            ip_addr:"100.0.0.245",
+            hotspot_info:"天府大道软件园B8-F1室内热点",
+            fireware_event:"  "
+        }));
+
+       $("#dev-management-bar .app-container").removeClass("active");
+       $("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+       $("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+        /*$("#device-management-bar .app-container[data-id='" + appId + "']").addClass("active");  */
+        /* register the handler */
+        this.pageScript();
+
+	    $("#devicecfg_tabs").tabs({
+              select: function(event,ui) {
+              // You need Firebug or the developer tools on your browser open to see these
+              console.log(event);
+              // This will get you the index of the tab you selected
+              console.log(ui.index);            
+              // And this will get you it's name
+            }
+        });	    devicecfg_tabs
+    }, /* refere the view if the subnetwork change */
+    appChanged:function () {
+       /*this.renderCommon();*/
+       this.render();
+    }
+});
+
+window.DeviceMgrAutoView = countlyView.extend({
+    initialize:function () {
+        this.template = Handlebars.compile($("#template-deviceautoconf-export").html());
+    }, /* register the event handler */
+    pageScript:function () {
+         $("#devicecfg_tabs").on('click', function () {
+            alert("select status");
+         });
+         $("#devicemgr_button1").button();
         
     }, /* refresh the view */
     renderCommon:function () {
@@ -2367,21 +2457,24 @@ window.DeviceMgrView = countlyView.extend({
             app_name:app.activeAppName,
             exports:[]
         }));
+      
         /* register the handler */
         this.pageScript();
 
-	    $("#devicecfg_tabs").tabs({
+        $("#devicecfg_tabs").tabs({
         select: function(event,ui) {
+        alert(document.compatMode);
         // You need Firebug or the developer tools on your browser open to see these
         console.log(event);
         // This will get you the index of the tab you selected
         console.log(ui.index);
         // And this will get you it's name
+
     }
-        });	
+        }); 
     }, /* refere the view if the subnetwork change */
     appChanged:function () {
-        this.renderCommon();
+       this.renderCommon();
     }
 });
 
@@ -2403,6 +2496,7 @@ var AppRouter = Backbone.Router.extend({
         "/manage/apps":"manageApps",
         "/manage/users":"manageUsers",
         "/devicemgr/config":"devicecfg",
+        "/devicemgr/autoconf":"autocfg",
         "*path":"main"
     },
     activeView:null, //current view
@@ -2461,6 +2555,9 @@ var AppRouter = Backbone.Router.extend({
     devicecfg:function(){
         this.renderWhenReady(this.devicesView);
     },
+    autocfg:function(){
+        this.renderWhenReady(this.devicesAutoView);
+    },    
     refreshActiveView:function () {
     }, //refresh interval function
     renderWhenReady:function (viewName) { //all view renders end up here
@@ -2507,11 +2604,17 @@ var AppRouter = Backbone.Router.extend({
         this.resolutionsView = new ResolutionView();
         this.durationsView = new DurationView();
         this.devicesView = new DeviceMgrView();
+        this.devicesAutoView = new DeviceMgrAutoView();
 
         Handlebars.registerPartial("date-selector", $("#template-date-selector").html());
         Handlebars.registerPartial("timezones", $("#template-timezones").html());
         Handlebars.registerPartial("app-categories", $("#template-app-categories").html());
+        Handlebars.registerPartial("mode-categories", $("#template-mode-categories").html());
+        Handlebars.registerPartial("channel-categories", $("#template-channel-categories").html());
         Handlebars.registerPartial("status-box", $("#status-box-export").html());
+        Handlebars.registerPartial("hotspot-box", $("#hotspot-box-export").html());
+        Handlebars.registerPartial("remote-op-box", $("#remote-op-box-export").html());
+        Handlebars.registerPartial("filter-box", $("#filter-box-export").html());
         Handlebars.registerHelper('eachOfObject', function (context, options) {
             var ret = "";
             for (var prop in context) {
@@ -2702,6 +2805,8 @@ var AppRouter = Backbone.Router.extend({
                     sidebarApp.removeClass("active");
                     self.activeView.appChanged();
                 }});
+
+
             });
 
             $("#sidebar-events").click(function (e) {
@@ -2944,7 +3049,7 @@ var AppRouter = Backbone.Router.extend({
                 store.remove('countly_date');
                 store.remove('countly_location_city');
             });
-	    
+
             $(".beta-button").click(function () {
                 CountlyHelpers.alert("This feature is currently in beta so the data you see in this view might change or disappear into thin air.<br/><br/>If you find any bugs or have suggestions please let us know!<br/><br/><a style='font-weight:500;'>Captain Obvious:</a> You can use the message box that appears when you click the question mark on the bottom right corner of this page.", "black");
             })

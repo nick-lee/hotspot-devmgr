@@ -16,38 +16,79 @@
     <link rel="stylesheet" href="/stylesheets/entypo/css/entypo.css" />
 	<link rel="stylesheet" href="/javascripts/dom/tablesorter/style.css" />
 	<link rel="stylesheet" href="/javascripts/dom/tipsy/tipsy.css" />
-	<link rel="stylesheet" href="/javascripts/dom/jqueryui/jquery.ui.all.css" />
+	<link rel="stylesheet" href="/javascripts/dom/jqueryui/jquery.ui.all.css" /> 
 	<link rel="stylesheet" href="/stylesheets/main.css?<%= countlyVersion %>" />
     <link rel="stylesheet" href="/javascripts/visualization/rickshaw/rickshaw.min.css" />
+    <!-- <link rel="stylesheet" href="/stylesheets/bootstrap-cust/css/bootstrap.css"> -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css">  
+
     <!-- Custome CSS -->
+<!--
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 200;
+      src: local('Source Sans Pro ExtraLight'), local('SourceSansPro-ExtraLight'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v6/toadOcfmlt9b38dHJxOBGMa9awK0IKUjIWABZIchFI8.woff) format('woff');
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 300;
+      src: local('Source Sans Pro Light'), local('SourceSansPro-Light'), url(http://themes.googleusercontent.com/static/   fonts/sourcesanspro/v6/toadOcfmlt9b38dHJxOBGNbE_oMaV8t2eFeISPpzbdE.woff) format('woff');
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://themes.googleusercontent.com/static/fonts    /sourcesanspro/v6/ODelI1aHBYDBqgeIAH2zlBM0YzuT7MdOe03otPbuUS0.woff) format('woff');
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 600;
+      src: local('Source Sans Pro Semibold'), local('SourceSansPro-Semibold'), url(http://themes.googleusercontent.com/    static/fonts/sourcesanspro/v6/toadOcfmlt9b38dHJxOBGJ6-ys_j0H4QL65VLqzI3wI.woff) format('woff');
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 700;
+      src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v6/toadOcfmlt9b38dHJxOBGFkQc6VGVFSmCnC_l7QZG60.woff) format('woff');
+    }
+    @font-face {
+      font-family: 'Source Sans Pro';
+      font-style: normal;
+      font-weight: 900;
+      src: local('Source Sans Pro Black'), local('SourceSansPro-Black'), url(http://themes.googleusercontent.com/static/fonts/sourcesanspro/v6/toadOcfmlt9b38dHJxOBGHiec-hVyr2k4iOzEQsW1iE.woff) format('woff');
+    }
+-->
+
     <style type=text/css>
-    /*
-		li.ui-state-default {
-		font-size : 10px;
-		}
-		.ui-tabs-panel {
-		background : yellow;
-		}
-		#devicecfg_tabs {
-			height: 100px;
-		}
-		.ui-widget-header {
-			background : grey;
-		}
-*/		
+    
+        #devicecfg_tabs .ui-state-active a { color: white; text-shadow: 2px 4px 3px rgba(0,0,0,0.3);}
 		#devicecfg_tabs .ui-tabs-panel {
 		background : white;
-		height: 170px;
-			border: 1px solid;
-			border-color:#b3b3b3;	
-			bottom: 10px;	
+		border: 1px solid #aaaaaa;
+		bottom: 0px;
+		position: relative;
+		top:-3px;
+		min-height:160px;
+		font-size:18px;
 		}
-
-		#devicecfg_tabs {
-			top : 15px;
-			border: 1px solid;
-			border-color:#b3b3b3;
-			background: yellow;
+		#deivcecfg_header
+		{
+			position: relative;
+			top:10px;
+			border: none;
+		}
+		#devicecfg_tabs { 
+			position: absolute;
+			top: 0px;
+			margin: 0px;
+			left:0px;
+			right:0px;
+			bottom: 0px;
+			border: 1px solid #aaaaaa;
+			height: 100%;
 		}
 		#devicecfg_tabs .ui-tabs .ui-tabs-nav li {
     		border: none;
@@ -55,17 +96,26 @@
     		background : yellow;
 		}
          #devicecfg_tabs ul.ui-widget-header, #devicecfg_tabs ul.ui-widget-content, #devicecfg_tabs ul.ui-state-default, #devicecfg_tabs ul.ui-state-hover {
-             background: #e6e6e6;
+             /*background: #e6e6e6;*/
+             background: transparent;
              border: none;
              height: 42px;
-             text-shadow:0 1px #fff;
+             text-shadow:0 1px #fff;             
          }
 		#devicecfg_tabs .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active
 		{
-    		background: #F7F7F7;
+    		/*background: #F7F7F7;*/
+    		background: #43A947;
+    		border:1px solid #43A947;
 		}         
 		#devicecfg_tabs .tabs-widget-header
 		{font:19px Ubuntu,Helvetica,sans-serif; color:#636363; text-shadow:0 1px #F6F6F6; float:left;}
+
+		#devicecfg_tabs .ui-corner-all, .ui-corner-top, .ui-corner-left, .ui-corner-tl { 
+			-moz-border-radius-topleft:4px/*{cornerRadius}*/; 
+			-webkit-border-top-left-radius: 4px/*{cornerRadius}*/; 
+			-khtml-border-top-left-radius: 4px/*{cornerRadius}*/; 
+			border-top-left-radius: 4px/*{cornerRadius}*/; }
 	</style>
 
 	<script><%- javascript %></script>
@@ -75,7 +125,7 @@
 		<div id="new-install-overlay"></div>
 		<div id="sidebar-top">
 			<a href="#/"><div id="sidebar-logo"></div></a>
-			<div id="sidebar-app-select">
+			<div id="sidebar-app-select" class="grid-border">
 				<div class="logo" <% if (userOfApps[0]){ %>style="background-image:url('/appimages/<%= userOfApps[0]._id %>.png')"<% } %>></div>
 				<div class="text"><% if (userOfApps[0]){ %><%= userOfApps[0].name %><% } %></div>
 			</div>
@@ -129,10 +179,11 @@
 					<div class="text" data-localize="sidebar.analytics.platforms"></div>
 				</a>
 			</div>
+			<!--
             <a class="item" id="engagement-menu">
                 <div class="logo icon-magnet" style="background-image:none; font-size:28px; text-align:center; width:35px; margin-left:14px; line-height:44px;"></div>
                 <div class="text" data-localize="sidebar.engagement"></div>
-            </a>
+            </a>            
             <div class="sidebar-submenu" id="engagement-submenu">
                 <a href="#/analytics/loyalty" class="item">
                     <div class="logo loyalty"></div>
@@ -147,23 +198,25 @@
                     <div class="text" data-localize="sidebar.engagement.durations"></div>
                 </a>
             </div>
+
             <a href="#/analytics/events" class="item" id="sidebar-events">
                 <div class="logo events"></div>
                 <div class="text" data-localize="sidebar.events"></div>
             </a>
+            -->
 	  <!-- Device Manager -->		   
 			<a class="item" id="device-menu">
-				<div class="logo management"></div>
+				<div class="logo devices"></div>
 				<div class="text" data-localize="sidebar.devicemgr"></div>
 			</a>
 	   	
 			<div class="sidebar-submenu" id="device-submenu">
 				<a href="#/devicemgr/config" class="item active">
-					<div class="logo applications"></div>
+					<div class="logo devices"></div>
 					<div class="text" data-localize="sidebar.devicemgr.config"></div>
 				</a>
- 			        <a href="#/manage/apps" class="item active">
-				          <div class="logo events"></div>
+ 			        <a href="#/devicemgr/autoconf" class="item active">
+				          <div class="logo resolutions"></div>
 				          <div class="text" data-localize="sidebar.devicemgr.autotemp"></div>
 			       </a>
 			</div>
@@ -176,7 +229,7 @@
 			<div class="sidebar-submenu" id="management-submenu">
 				<a href="#/manage/apps" class="item active">
 					<div class="logo applications"></div>
-					<div class="text" data-localize="sidebar.management.applications"></div>
+					<div class="text" data-localize="subnetwork.mgt"></div>
 				</a>
 				<!--
 				<a href="#/manage/export" class="item">
@@ -228,27 +281,26 @@
 		</div>
 	</div>
 	<div id="app-nav">
-		<div id="app-nav-head">
-			<div id="app-nav-title" style="max-width: 105px;" data-localize="management-applications.title"></div>
-			<div class="button-container">
+		<div id="app-nav-head" class="grid-border">
+			<div id="app-nav-title" style="max-width: 105px;" data-localize="subnetwork.title"></div>
+			<div class="button-container grid-border">
 				<% if(member['global_admin'] && adminOfApps.length > 1) { %>
-				<div class="icon-button dark help-zone-vs" id="sort-app-button">
-					<div class="icon"></div>
+				<div class="icon-button dark help-zone-vs grid-border" id="sort-app-button">
+					<div class="icon grid-border"></div>
 				</div>
 				<% } %>
 			</div>
 		</div>
 		<div class="apps-scrollable">
 			<% for (var i = 0; i < userOfApps.length; i++) { %>
-				<div class="app-container app-navigate" data-key="<%= userOfApps[i].key %>" data-id="<%= userOfApps[i]['_id'] %>">
-					<div class="logo" style="background-image: url('/appimages/<%= userOfApps[i]['_id'] %>.png');"></div>
-					<div class="name"><%= userOfApps[i].name %></div>
+				<div class="app-container app-navigate grid-border" data-key="<%= userOfApps[i].key %>" data-id="<%= userOfApps[i]['_id'] %>">
+					<div class="logo" style="background-image: url('/appimages/<%= userOfApps[i]['_id'] %>.png');"><span class="name" > <%= userOfApps[i].name %> </span></div>
 					<div class="drag"></div>
 				</div>
 			<% } %>
 		</div>
 		<div id="sidebar-new-app">
-			<div class="app-container app-navigate" id="">
+			<div class="app-container app-navigate">
 				<div class="logo"></div>
 				<div class="name"></div>
 				<div class="drag"></div>
@@ -353,6 +405,25 @@
 		<div data-value="18" class="item" data-localize="application-category.travel"></div>
 		<div data-value="19" class="item" data-localize="application-category.utilities"></div>
 		<div data-value="20" class="item" data-localize="application-category.weather"></div>
+	</script>
+
+	<script id="template-mode-categories" type="text/x-handlebars-template">
+		<div data-value="1" class="item" data-localize="">802.11 b</div>
+		<div data-value="2" class="item" data-localize="">802.11 g</div>
+		<div data-value="3" class="item" data-localize="">802.11 n</div>
+	</script>
+
+	<script id="template-channel-categories" type="text/x-handlebars-template">
+		<div data-value="1" class="item" data-localize="">Channel 1</div>
+		<div data-value="2" class="item" data-localize="">Channel 2</div>
+		<div data-value="3" class="item" data-localize="">Channel 3</div>
+		<div data-value="4" class="item" data-localize="">Channel 4</div>
+		<div data-value="5" class="item" data-localize="">Channel 5</div>
+		<div data-value="6" class="item" data-localize="">Channel 6</div>
+		<div data-value="7" class="item" data-localize="">Channel 7</div>
+		<div data-value="8" class="item" data-localize="">Channel 8</div>
+		<div data-value="9" class="item" data-localize="">Channel 9</div>
+		<div data-value="10" class="item" data-localize="">Channel 10</div>						
 	</script>
 
 	<script id="template-analytics-common"  type="text/x-handlebars-template">
@@ -626,27 +697,30 @@
 
 	<script id="template-management-applications" type="text/x-handlebars-template">
 		<div id="app-management-bar">
-			<div id="app-nav-head">
-				<div id="app-nav-title" data-localize="management-applications.title"></div>
+			<div id="app-nav-head" class="grid-border">
+				<div id="dev-nav-title" class="grid-border" data-localize="subnetwork.title"></div>
 				<% if(member['global_admin']) { %>
 				<div style="overflow:hidden; position:absolute; top:19px; right:10px;">
-					<div class="icon-button dark help-zone-vs" data-help-localize="manage-apps.app-add-button" id="add-app-button">
+					<div class="icon-button dark help-zone- vs" data-help-localize="manage-apps.app-add-button" id="add-app-button">
 						<div class="icon" style="background-image:url('/images/management/add.png'); width:17px; height:18px;"></div>
 						<div class="text" data-localize="common.add"></div>
 					</div>
 				</div>
 				<% } %>
 			</div>
-			<div class="scrollable">
+
+			<div class="scrollable grid-border">
 				{{#eachOfObjectValue admin_apps}}
-				<div class="app-container" data-key="{{this.key}}" data-id="{{this._id}}">
-					<div class="logo" style="background-image: url('/appimages/{{this._id}}.png');"></div>
-					<div class="name">{{this.name}}</div>
+				<div class="app-container grid-border" data-key="{{this.key}}" data-id="{{this._id}}">
+					<div class="logo" style="background-image: url('/appimages/{{this._id}}.png');">
+						<span class="name">{{this.name}}</span>
+					</div>					
 				</div>
 				{{/eachOfObjectValue}}
 			</div>
-			<div id="manage-new-app">
-				<div class="app-container">
+
+			<div id="manage-new-app" class="grid-border">
+				<div class="app-container grid-border">
 					<div class="logo"></div>
 					<div class="name" data-localize="management-applications.my-new-app"></div>
 				</div>
@@ -656,20 +730,20 @@
 			<div id="add-new-app">
 				<div class="widget-header">
 					<div class="left">
-						<div class="title new-app-name" data-localize="management-applications.my-new-app"></div>
+						<div class="title new-app-name" data-localize="subnetwork.new_net"></div>
 					</div>
 				</div>
 				<div>
 					<table class="d-table horizontal" cellpadding="0" cellspacing="0">
 						<tbody>
-							<tr class="help-zone-vs" data-help-localize="manage-apps.app-name">
-								<td data-localize="management-applications.application-name"></td>
+							<tr class="help-zone-vs" data-help-localize="subnetwork.name">
+								<td data-localize="subnetwork.name"></td>
 								<td>
 									<input type="text" value="" placeholder="Enter application name..." data-localize="placeholder.app-name" id="app-add-name">
 								</td>
 							</tr>
-							<tr class="help-zone-vs" data-help-localize="manage-apps.app-category">
-								<td data-localize="management-applications.category"></td>
+							<tr class="help-zone-vs" data-help-localize="subnetwork.category">
+								<td data-localize="subnetwork.category"></td>
 								<td>
 									<div class="cly-select" style="width:280px;">
 										<div class="select-inner">
@@ -686,6 +760,7 @@
 									</div>
 								</td>
 							</tr>
+							{{!--
 							<tr class="help-zone-vs" data-help-localize="manage-apps.app-timezone">
 								<td data-localize="management-applications.time-zone"></td>
 								<td id="app-add-timezone" >
@@ -718,8 +793,9 @@
 									<input type="hidden" value="" id="app-country"/>
 								</td>
 							</tr>
-                            <tr class="help-zone-vs" data-help-localize="manage-apps.app-icon">
-								<td data-localize="management-applications.icon"></td>
+							--}}
+                            <tr class="help-zone-vs" data-help-localize="subentwork.icon">
+								<td data-localize="subnetwork.icon"></td>
 								<td>
 									<form action="/apps/icon" enctype="multipart/form-data" id="add-app-image-form" method="post">
 										<input type="file" id="app_image" name="app_image" />
@@ -761,12 +837,12 @@
 					<input type="hidden" id="app-edit-id"/>
 					<table class="d-table horizontal" cellpadding="0" cellspacing="0">
 						<tbody>
-                            <tr class="help-zone-vs" data-help-localize="manage-apps.app-id">
-                                <td data-localize="management-applications.app-id"></td>
+                            <tr class="help-zone-vs" data-help-localize="subnetwork.id">
+                                <td data-localize="subnetwork.id"></td>
                                 <td id="view-app-id"></td>
                             </tr>
-							<tr class="help-zone-vs" data-help-localize="manage-apps.app-name">
-								<td data-localize="management-applications.application-name"></td>
+							<tr class="help-zone-vs" data-help-localize="subnetwork.name">
+								<td data-localize="subnetwork.name"></td>
 								<td id="app-edit-name">
 									<div class="read"></div>
 									<div class="edit">
@@ -775,7 +851,7 @@
 								</td>
 							</tr>
 							<tr class="help-zone-vs" data-help-localize="manage-apps.app-category">
-								<td data-localize="management-applications.category"></td>
+								<td data-localize="subnetwork.category"></td>
 								<td id="app-edit-category">
 									<div class="read"></div>
 									<div class="edit">
@@ -795,12 +871,14 @@
 									</div>
 								</td>
 							</tr>
+							{{!--
 							<tr class="help-zone-vs" data-help-localize="manage-apps.app-key">
 								<td data-localize="management-applications.app-key"></td>
 								<td id="view-app-key"></td>
 							</tr>
+							--}}
 							<tr class="help-zone-vs" data-help-localize="manage-apps.app-timezone">
-								<td data-localize="management-applications.time-zone"></td>
+								<td data-localize="subnetwork.zone"></td>
 								<td id="app-edit-timezone">
 									<div class="read">
 											<div class="flag"></div>
@@ -1120,14 +1198,223 @@
 	</script>
 
 	<script id="status-box-export" type="text/x-handlebars-template">
-		<p> This is the status box for test </p>
+
+	  <div class="row">
+        <div class="col-md-2">
+        	<img src="/images/management/router.png" alt="Smiley face" height="120" width="120">          
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">序列号:</div>
+            <div class="col-md-4">{{serial_num}}</div>
+            <div class="col-md-2" style="font-weight:bold;">型号:</div>
+            <div class="col-md-4" >{{hw_model}}</div>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">注册日期:</div>
+            <div class="col-md-4">{{register_time}}</div>
+            <div class="col-md-2" style="font-weight:bold;">在线情况:</div>
+            <div class="col-md-4">{{online_status}}</div>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">固件版本:</div>
+            <div class="col-md-4">{{fireware_ver}}</div>
+            <div class="col-md-2" style="font-weight:bold;">网络地址:</div>
+            <div class="col-md-4">{{ip_addr}}</div>
+          </div>
+        </div>
+        <div class="col-md-10">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">热点信息:</div>
+            <div class="col-md-8">{{hotspot_info}}</div>
+          </div>
+        </div>        
+      </div>
+    
+		
+	</script>
+
+	<script id="hotspot-box-export" type="text/x-handlebars-template">
+
+	  <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">信道:</div>
+            <div class="col-md-4">
+
+              <div class="cly-select" style="width:220px;">
+			    <div class="select-inner">
+			    	<div class="text-container">
+			    		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
+			    	</div>
+			    	<div class="right combo"></div>
+			    </div>
+			    <div class="select-items square" style="width:220px;">
+			    	<div class="scrollable">
+			    		{{> mode-categories }}
+			    	</div>
+			    </div>
+              </div>   	          
+  
+            </div>
+            <div class="col-md-2" style="font-weight:bold;">模式:</div>
+            <div class="col-md-4">
+
+              <div class="cly-select" style="width:220px;">
+			    <div class="select-inner">
+			    	<div class="text-container">
+			    		<div class="text" id="mode-add-category" data-localize="manaapplications.category.tip"></div>
+			    	</div>
+			    	<div class="right combo"></div>
+			    </div>
+			    <div class="select-items square" style="width:220px;">
+			    	<div class="scrollable">
+			    		{{> channel-categories }}
+			    	</div>
+			    </div>
+              </div>   	          
+  
+            </div> 
+          </div>
+        </div>  
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-2" style="font-weight:bold;">热点名称:</div>
+            <div class="col-md-9">
+				<input class="username-text" style="width:100%;" type="text" value=""/><br/>
+            </div>
+            <div class="col-md-1" style="font-weight:bold;"></div>
+          </div>
+        </div>
+
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6" ></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+					<div class="icon-button light" id="config" style="">
+						<div class="icon" style="background-image:url('/images/reports/pdf_icon.png'); width:18px; height:19px;"></div>
+						<div class="text" style="">取消</div>
+					</div>
+					<div class="icon-button light create-report" id="create-report" style="">
+						<div class="icon" style="background-image:url('/images/reports/pdf_icon.png'); width:18px; height:19px;"></div>
+						<div class="text">应用</div>						
+					</div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+	</script>
+
+	<script id="remote-op-box-export" type="text/x-handlebars-template"
+
+
+  <div class="bs-example">
+    <div class="row">
+      <div class="col-sm-6 col-md-2" style="border: none;">      
+        <div class="thumbnail">
+          <a href="#"><span class="badge"></span></a>
+          <br/>
+          <img src="/images/dashboard/reboot-64.png" alt="Generic placeholder thumbnail">
+          <div class="caption">
+					<div class="icon-button light create-report" id="create-report">
+						<div class="icon" style=""></div>
+						<div class="text">重启系统</div>
+					</div>           
+					<br/>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <div class="thumbnail">
+          <a href="#"><span class="badge"></span></a>
+          <br/>
+          <img src="/images/dashboard/reset-todefault-64.png" alt="Generic placeholder thumbnail">
+          <div class="caption">
+					<div class="icon-button light create-report" id="reset_default">
+						<div class="icon" style=""></div>
+						<div class="text">恢复出厂</div>
+					</div>           
+					<br/>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-2">
+        <div class="thumbnail"> 
+          <a href="#"><span class="badge badge-error" id="badge_fireware_msg" style=";position:relative;left:65px;background-color:white;">{{fireware_event}}</span></a>
+
+          <img src="/images/dashboard/upgrade-icon-64.png" alt="Generic placeholder thumbnail">
+          <div class="caption"> 
+					<div class="icon-button light create-report" id="update_fireware">
+						<div class="icon" style=""></div>
+						<div class="text">升级固件</div>
+					</div>           
+					<br/>          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 	</script>
 
 	<script id="template-devicemgr-export" type="text/x-handlebars-template">
-		<div class="widget">
+		<div id="dev-management-bar" class="grid-border" >
+			<div id="app-nav-head" class="grid-border">
+				<div id="dev-nav-title" data-localize="sidebar.devicemgr.hotspot">{{ hotspot_name }}</div>
+				<% if(member['global_admin']) { %>
+				<div style="overflow:hidden; position:absolute; top:19px; right:10px;">
+					<div class="icon-button dark help-zone- vs" data-help-localize="manage-apps.app-add-button" id="add-dev-button">
+						<div class="icon" style="background-image:url('/images/management/wi-fi-18.png'); width:17px; height:18px;"></div>
+						<div class="text" data-localize="common.add"></div>
+					</div>
+				</div>
+				<% } %>
+			</div>
+
+			<div class="scrollable grid-border" >	
+				<div class="dev-container grid-border" >
+					<div class="logo" data-id='abc' style="background-image: url('/appimages/534803e39d6005b305000002.png');">
+						<span class="name"> 奥克斯</span>
+					</div>					
+				</div>
+
+				<div class="dev-container grid-border" data-key="df7ae11caddc403c504ce3df2c7cf4f5dbffde8f" data-id="534803e39d6005b305000002">
+					<div class="logo" style ="background-image: url('/appimages/534803e39d6005b305000002.png');">
+						<span class="name" > "Alan's Subnetwork"  </span>
+					</div>
+				</div>
+
+				{{#eachOfObjectValue admin_apps}}
+				<div class="app-container" data-key="{{this.key}}" data-id="{{this._id}}">
+					<div class="logo" style="background-image: url('/appimages/{{this._id}}.png');">
+						<span class="name">{{this.name}}</span>
+					</div>					
+				</div>
+				{{/eachOfObjectValue}}
+
+			</div>
+
+			<div id="manage-new-app" style="margin-left:187px; " class="active" >
+				<div class="app-container" >
+					<div class="logo"></div>
+					<div class="name" data-localize="management-applications.my-new-app"></div>
+				</div>
+			</div>
+		
+		</div>
+
+		<div class="widget" style="margin-left:187px;">
 			<div class="widget-header">
 				<div class="left">
-					<div class="title">Application Name</div>
+					<div class="title" data-localize="sidebar.devicemgr.topo"></div>
 				</div>
 				<div style="float:right; overflow:hidden; margin-top:6px;">
 					<div class="icon-button light" id="export-status-all">
@@ -1151,32 +1438,38 @@
 				<div id="geo-chart-outer"><div id="geo-chart" style="margin:0 auto; padding:20px;"></div></div>
 			</div>	
 
-
-		    <div id=devicecfg_tabs class="widget-header" >
-		    	<ul>
-		    	    <li><a href=#tab1 class="tabs-widget-header">状态</a></li>
-		  	   		<li><a href=#tab2 class="tabs-widget-header">Config</a></li>
-		  	   		<li><a href=#tab3 class="tabs-widget-header">Monitor</a></li>
-		    	</ul>
-		    	<div id=tab1>{{> status-box }}</div>
-		    	<div id=tab2>Contents of second tab</div>
-		    	<div id=tab3>Contents of thrid tab</div>
-		    </div>
-
-			<div class="widget-content">
-				<div id="export-checkbox-container">
-					{{#eachOfArray events}}
-					<div class="export-checkbox" data-key="{{value.key}}">
-						<div class="option">
-							<div class="checkbox"></div>
-							<div class="text">{{value.name}}</div>
-		 				</div>
-					</div>
-					{{/eachOfArray}}
-					<span class="stretch"></span>
-				</div>
+			<div id=deivcecfg_header class="widget-header ">
+			    <div id="devicecfg_tabs" class="widget-content">
+			    	<ul>
+		        	    <li><a href=#tab1 class="tabs-widget-header" data-localize="sidebar.devicemgr.status"></a></li>
+		  	       		<li><a href=#tab2 class="tabs-widget-header" data-localize="sidebar.devicemgr.hotspot.config"></a></li>
+		  	       		<li><a href=#tab3 class="tabs-widget-header" data-localize="sidebar.devicemgr.remoteop"></a></li>
+		        	</ul>
+		        	<div id=tab1>{{> status-box }}</div>
+		        	<div id=tab2>{{> hotspot-box }}</div>
+		        	<div id=tab3>{{> remote-op-box }}</div>
+			    </div>
 			</div>
 		</div>		
+	</script>
+
+	<script id="filter-box-export" type="text/x-handlebars-template">
+		<p> filter box </p>
+	</script>
+
+	<script id="template-deviceautoconf-export" type="text/x-handlebars-template">
+		<div class="widget">
+			<div id=deivcecfg_header class="widget-header ">
+			    <div id="devicecfg_tabs" class="widget-content">
+			    	<ul>
+		  	       		<li><a href=#tab2 class="tabs-widget-header" data-localize="sidebar.devicemgr.hotspot.config"></a></li>
+		        	    <li><a href=#tab1 class="tabs-widget-header" data-localize="sidebar.devicemgr.filter"></a></li>		  	       		
+		        	</ul>
+		        	<div id=tab1>{{> hotspot-box }}</div>
+		        	<div id=tab2>{{> filter-box }}</div>
+			    </div>
+			</div>
+		</div>	
 	</script>
 
     <div id="IntercomDefaultWidget" style="visibility: visible;"><span></span></div>
@@ -1192,7 +1485,7 @@
     <script language="javascript" type="text/javascript" src="/javascripts/min/countly.visualization.js?<%= countlyVersion %>"></script>
     <script language="javascript" type="text/javascript" src="/javascripts/countly/countly.config.js?<%= countlyVersion %>"></script>
     <script language="javascript" type="text/javascript" src="/javascripts/min/countly.lib.js?<%= countlyVersion %>"></script>
-    <!---->
+    <!-- -->
     <!-- DEVELOPMENT -->
      -->
 	<script language="javascript" type="text/javascript" src="/javascripts/dom/jquery/jquery-1.8.3.min.js"></script>

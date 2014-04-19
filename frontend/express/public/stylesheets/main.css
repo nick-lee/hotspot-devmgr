@@ -11,7 +11,7 @@ a:active { color:inherit; }
 
 /* SIDEBAR */
 #sidebar { position:fixed; left:0; width:224px; background-image:url('../images/dashboard/menu_bg.png'); background-position:0 400px; height:100%; z-index:10; user-select:none; }
-#sidebar-top { height:112px; padding-top:11px; background-image:url('../images/dashboard/logo_bg.png'); }
+#sidebar-top { height:122px; padding-top:11px; background-image:url('../images/dashboard/logo_bg.png'); }
 #sidebar-logo { background-image:url('../images/dashboard/logo.png'); width:144px; height:44px; margin:0 auto; }
 #sidebar-app-select { width:170px; height:16px; padding:10px; background-image:url('../images/dashboard/combobox.png'); margin:0 auto; margin-top:21px; cursor:pointer; }
 	#sidebar-app-select:hover { background-position:-190px; }
@@ -235,6 +235,32 @@ a:active { color:inherit; }
 #app-management-bar .app-container.active { background-image:url('../images/dashboard/dropdown_item_active.png'), url('../images/dashboard/dropdown_item.png'); background-repeat:no-repeat; background-position:right; }
 #app-management-bar .app-container.active:hover { opacity:1; }
 
+
+/* DEVICE NAVIGATION */
+#dev-management-bar { z-index:3; }
+#dev-management-bar #app-nav-head { padding-left:15px;}
+#dev-nav-title { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:85px; float:left; padding-top:3px; }
+ #dev-nav { width:190px; display:none; text-align:right; background-color:#CCC; height:100%; position:fixed; left:31px; z-index:8; background-image:url('../images/dashboard/dropdown_bg.png'); } 
+#dev-nav-head { height:27px; padding:20px; padding-left:32px; color:#BFBFBF; text-shadow:0 -1px #232323; font:18px Ubuntu,Helvetica,sans-serif; background-image:url('../images/dashboard/dropdown_head.png'); text-align:left; }
+	#app-nav-head .button-container { overflow:hidden; position:absolute; top:19px; right:10px; }
+.dev-container { overflow:hidden;cursor:pointer; height:30px; background-image:url('../images/dashboard/dropdown_item.png'); padding:8px 12px; padding-left:32px; overflow:auto; }
+.dev-container:hover { opacity:0.7; }
+.dev-container:last-child { margin-bottom:60px; }
+	.dev-container .logo { float:left; width:25px; height:25px; background-size:25px 25px; margin-top:1px; border-radius:5px; border:1px solid #555; box-shadow:0 0 1px 0 #333; background-position:center; }
+	.dev-container .name { width:126px; text-align:left; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; float:left; margin-left:28px; padding-top:6px; color:#464646; text-shadow:0 1px #EAEAEA; font:13px Ubuntu,Helvetica,sans-serif; }
+	.new-app-name { width:300px; text-align:left; text-overflow:ellipsis; white-space:nowrap; overflow:hidden; }
+	.dev-container.app-navigate { position:relative; }
+	.dev-container.app-navigate .name { width:109px; left:0px; }
+	.dev-container.app-navigate .drag { display:none; width:15px; height:13px; background-image:url('../images/dashboard/app-order.png'); cursor:move; position:absolute; top:17px; right:12px; }
+
+#sort-app-button .icon { margin:0; width:21px; height:18px; background-image:url('../images/dashboard/app-order-activate.png'); }
+/* APP NAVIGATION END */
+
+#dev-management-bar { width:190px; position:fixed; left:220px; top:0; text-align:right; background-color:#CCC; height:100%; background-image:url('../images/dashboard/dropdown_bg.png'); }
+#dev-management-bar .dev-container { padding-left:15px; }
+#dev-management-bar .dev-container.active { background-image:url('../images/dashboard/dropdown_item_active.png'), url('../images/dashboard/dropdown_item.png'); background-repeat:no-repeat; background-position:right; }
+#dev-management-bar .dev-container.active:hover { opacity:1; }
+
 /* TABLES */
 table.d-table { width:100%; padding:0; margin:0; border-radius:7px; border:1px solid #C2C2C2; border-top-color:#959595; margin-bottom:20px; }
 table.d-table:not(.no-fix) { table-layout:fixed; }
@@ -457,7 +483,12 @@ table.d-table:not(.no-fix) { table-layout:fixed; }
 	.read .logo { float:left; height:25px; width:25px; background-size:25px 25px; background-image:url('../images/reports/date-time.png'); margin-top:1px; border-radius:5px; border:1px solid #555; box-shadow:0 0 1px 0 #333; background-position:center; }
 .edit { display:none; }
 
-#sidebar-new-app { display:none; }
+#app-container-new
+{
+ overflow:hidden;
+}
+
+#sidebar-new-app { display:none; overflow:hidden; }
 
 .required { font-size:20px; color:#B94A48; vertical-align:top; display:none; padding-left:2px; }
 .red-text { font-size:12px; color:#B94A48; vertical-align:text-top; padding-left:5px; }

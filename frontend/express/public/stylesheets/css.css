@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/stylesheets/yEAJBCsbAF-h7_da9lxoCw.eot);
+  src: local('Ubuntu'), url(/stylesheets/yEAJBCsbAF-h7_da9lxoCw.eot) format('embedded-opentype'), url(/stylesheets/hHs22WBTTzMhSqc5uBBDKg.woff) format('woff');
+}
+@font-face {
+  font-family: 'Ubuntu';
+  font-style: normal;
+  font-weight: 500;
+  src: url(/stylesheets/gMhvhm-nVj1086DvGgmzB_Y6323mHUZFJMgTvxaG2iE.eot);
+  src: local('Ubuntu Medium'), local('Ubuntu-Medium'), url(/stylesheets/gMhvhm-nVj1086DvGgmzB_Y6323mHUZFJMgTvxaG2iE.eot) format('embedded-opentype'), url(/stylesheets/gMhvhm-nVj1086DvGgmzBz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
+}
+
