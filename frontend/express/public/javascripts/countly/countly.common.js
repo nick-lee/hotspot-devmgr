@@ -6,15 +6,27 @@
     // Public Properties
     countlyCommon.ACTIVE_APP_KEY = 0;
     countlyCommon.ACTIVE_APP_ID = 0;
+    countlyCommon.ACTIVE_DEV = 0;
     countlyCommon.BROWSER_LANG = jQuery.i18n.browserLang();
     countlyCommon.BROWSER_LANG_SHORT = jQuery.i18n.browserLang().split("-")[0];
     countlyCommon.HELP_MAP = {};
     countlyCommon.periodObj = getPeriodObj();
+    countlyCommon.localSearch = null;
+    countlyCommon.localMapDev = null;
+    countlyCommon.localSubnetMap =null;  
+    /*
+     * there are two maps in design , one for devmgr, and one for subnetwork, 
+     * for subnetwork, it can share the map but with the different parameters 
+     */  
+    countlyCommon.NEW_SUBNET_XY = {subnetid:countlyCommon.ACTIVE_APP_ID,marker_loc:null,name:null,marker:null};
+    countlyCommon.VIEW_SUBNET_XY = {subnetid:countlyCommon.ACTIVE_APP_ID,marker_loc:null,name:null,marker:null};
+
 
     if (store.get("countly_active_app")) {
         if (countlyGlobal['apps'][store.get("countly_active_app")]) {
             countlyCommon.ACTIVE_APP_KEY = countlyGlobal['apps'][store.get("countly_active_app")].key;
             countlyCommon.ACTIVE_APP_ID = store.get("countly_active_app");
+            countlyCommon.ACTIVE_DEV = store.get("countly_active_dev");
         }
     }
 
@@ -42,6 +54,10 @@
         store.set("countly_active_app", appId);
     };
 
+    countlyCommon.setActiveDev = function(serail_no){
+        countlyCommon.ACTIVE_DEV = serail_no;
+        store.set("countly_active_dev",serail_no);
+    };
     // Calculates the percent change between previous and current values.
     // Returns an object in the following format {"percent": "20%", "trend": "u"}
     countlyCommon.getPercentChange = function (previous, current) {

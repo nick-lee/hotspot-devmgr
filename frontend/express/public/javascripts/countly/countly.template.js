@@ -159,6 +159,8 @@ $.extend(Template.prototype, {
         $(".cly-select").click(function (e) {
             var selectItems = $(this).find(".select-items");
 
+            console.log("click the select ");
+
             if (!selectItems.length) {
                 return false;
             }
@@ -1426,10 +1428,85 @@ window.DurationView = countlyView.extend({
 window.ManageAppsView = countlyView.extend({
     initialize:function () {
         this.template = Handlebars.compile($("#template-management-applications").html());
+    },            
+    init_map:function(){
+        //var _currentDev = countlyDevmgr.getCurrentDevice();
+
+        countlyCommon.localSubnetMap = new BMap.Map("network-map-new");
+        /*            
+        if(_.size(_currentDev) == 0)
+            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+        else
+            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(_currentDev[0]["aix"],_currentDev[0]["aiy"]),11);
+        */
+        countlyCommon.localSubnetMap.addControl(new BMap.NavigationControl());   
+        countlyCommon.localSubnetMap.enableScrollWheelZoom();
+        /*    
+        var subnet_marker = null;
+        function addMarker(point, index){ 
+        var myIcon = new BMap.Icon("images/dashboard/Map-Marker-Bubble-Pink-icon-64.png", new BMap.Size(64, 64), {    
+           offset: new BMap.Size(10, 25),    
+           imageOffset: new BMap.Size(0, 0 - index * 25)  
+         });       
+        
+         subnet_marker = new BMap.Marker(point ,{icon:myIcon}) ;    
+          subnet_marker.enableDragging();        
+          subnet_marker.addEventListener("click", function(e){ 
+          });  
+
+          subnet_marker.addEventListener("mousedown",function(){
+            console.log("mousedown");
+          });
+
+          subnet_marker.addEventListener("mouseover",function(){
+            console.log("mouseover");
+          });
+
+          subnet_marker.addEventListener("mouseup",function(e){
+            console.log("mouseup");
+            console.log(e.point);
+            countlyCommon.NEW_SUBNET_XY["marker_loc"] = e.point; 
+          });
+
+          if ($("#app-add-name").val() == "" )
+             var label = new BMap.Label("新建热点子网",{offset:new BMap.Size(5,-20)});
+          else
+             var label = new BMap.Label($("#app-add-name").val(),{offset:new BMap.Size(5,-20)});
+
+          subnet_marker.setLabel(label);     
+
+          label.setStyle({                                   
+            backgroundColor:"yellow",
+            opacity:"0.7",
+            borderStyle:"solid",
+            borderColor:"grey",
+            borderRadius:"5px"
+          });        
+          countlyCommon.localSubnetMap.addOverlay(subnet_marker);                     // 将标注添加到地图中   
+        }
+        */   
+        /* use search only for new network */
+        countlyCommon.localSearch = new BMap.LocalSearch(countlyCommon.localSubnetMap, {
+          renderOptions:{map: countlyCommon.localSubnetMap}
+        });
+            
+        //countlyCommon.localSearch.search(location);
+        /*
+        function showInfo(e){
+         if(subnet_marker != null){
+            subnet_marker.remove();
+         }
+         addMarker(e.point,0);
+        }
+        countlyCommon.localSubnetMap.addEventListener("click", showInfo);
+        */
     },
     renderCommon:function () {
+        console.log("finish render the tempalte!");
+        console.log(MY_APP.Flickr.api_key);
         $(this.el).html(this.template({
-            admin_apps:countlyGlobal['admin_apps']
+            admin_apps:countlyGlobal['admin_apps'],
+            test_appname:MY_APP.Flickr.api_key
         }));
 
 		var appCategories = { 1:jQuery.i18n.map["application-category.books"], 2:jQuery.i18n.map["application-category.business"], 3:jQuery.i18n.map["application-category.education"], 4:jQuery.i18n.map["application-category.entertainment"], 5:jQuery.i18n.map["application-category.finance"], 6:jQuery.i18n.map["application-category.games"], 7:jQuery.i18n.map["application-category.health-fitness"], 8:jQuery.i18n.map["application-category.lifestyle"], 9:jQuery.i18n.map["application-category.medical"], 10:jQuery.i18n.map["application-category.music"], 11:jQuery.i18n.map["application-category.navigation"], 12:jQuery.i18n.map["application-category.news"], 13:jQuery.i18n.map["application-category.photography"], 14:jQuery.i18n.map["application-category.productivity"], 15:jQuery.i18n.map["application-category.reference"], 16:jQuery.i18n.map["application-category.social-networking"], 17:jQuery.i18n.map["application-category.sports"], 18:jQuery.i18n.map["application-category.travel"], 19:jQuery.i18n.map["application-category.utilities"], 20:jQuery.i18n.map["application-category.weather"]},
@@ -1440,6 +1517,11 @@ window.ManageAppsView = countlyView.extend({
         $("#app-management-bar .app-container[data-id='" + appId + "']").addClass("active");
 
         function initAppManagement(appId) {
+
+            console.log("set class!");
+            $("#map-search-btn").addClass("disabled");
+            $("#map-search-btn").hide();
+            $("#subnet-geo-input").hide();
             if (jQuery.isEmptyObject(countlyGlobal['apps'])) {
                 showAdd();
                 $("#no-app-warning").show();
@@ -1449,6 +1531,7 @@ window.ManageAppsView = countlyView.extend({
                 return false;
             } else {
                 hideAdd();
+                console.log("not show add");
 
                 if (countlyGlobal['admin_apps'][appId]) {
                     $("#delete-app").show();
@@ -1493,6 +1576,96 @@ window.ManageAppsView = countlyView.extend({
                 }
             }
         }
+
+        function listview_setupmap(appId){
+          /**
+           * get current subnetwork, and point it on map 
+           */
+           var subnetInfo = countlyDevmgr.getSubnetById(appId);
+           console.log(appId);
+           if(countlyCommon.VIEW_SUBNET_XY["marker"] != null)
+                countlyCommon.VIEW_SUBNET_XY["marker"].remove();
+           countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]),15);
+           countlyCommon.VIEW_SUBNET_XY["marker"] = new BMap.Marker(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]));  // 创建标注
+           countlyCommon.localSubnetMap.addOverlay(countlyCommon.VIEW_SUBNET_XY["marker"]);      
+  
+           var label = new BMap.Label(subnetInfo[0]["name"],{offset:new BMap.Size(-15,-20)});
+  
+           countlyCommon.VIEW_SUBNET_XY["marker"].setLabel(label);     
+           label.setStyle({                                   
+              backgroundColor:"yellow",
+              opacity:"0.7",
+              borderStyle:"solid",
+              borderColor:"grey",
+              borderRadius:"5px"
+            }); 
+        }
+
+        function addview_setupmap(){
+          /**
+           * get current subnetwork, and point it on map 
+           */
+           var subnetInfo = countlyDevmgr.getSubnetById(countlyCommon.ACTIVE_APP_ID);
+
+           /* set default view to current selected subnetwork */
+           if(countlyCommon.NEW_SUBNET_XY["marker"] != null)
+                countlyCommon.NEW_SUBNET_XY["marker"].remove();
+           if(countlyCommon.VIEW_SUBNET_XY["marker"] != null)
+                countlyCommon.VIEW_SUBNET_XY["marker"].remove();            
+           countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]),15);
+
+           function addMarker(point, index){ 
+               var myIcon = new BMap.Icon("images/dashboard/Map-Marker-32.png", new BMap.Size(32, 32), {    
+               offset: new BMap.Size(10, 25),    
+               imageOffset: new BMap.Size(0, 0 - index * 25)  
+             });       
+            
+             countlyCommon.NEW_SUBNET_XY["marker"] = new BMap.Marker(point ,{icon:myIcon}) ;    
+              countlyCommon.NEW_SUBNET_XY["marker"].enableDragging();        
+              countlyCommon.NEW_SUBNET_XY["marker"].addEventListener("click", function(e){ 
+              });  
+    
+              countlyCommon.NEW_SUBNET_XY["marker"].addEventListener("mousedown",function(){
+                console.log("mousedown");
+              });
+    
+              countlyCommon.NEW_SUBNET_XY["marker"].addEventListener("mouseover",function(){
+                console.log("mouseover");
+              });
+    
+              countlyCommon.NEW_SUBNET_XY["marker"].addEventListener("mouseup",function(e){
+                console.log("mouseup");
+                console.log(e.point);
+                countlyCommon.NEW_SUBNET_XY["marker_loc"] = e.point; 
+              });
+              
+              if ($("#app-add-name").val() == "" )
+                 var label = new BMap.Label("新建热点子网",{offset:new BMap.Size(5,-20)});
+              else
+                 var label = new BMap.Label($("#app-add-name").val(),{offset:new BMap.Size(5,-20)});
+    
+              countlyCommon.NEW_SUBNET_XY["marker"].setLabel(label);     
+    
+              label.setStyle({                                   
+                backgroundColor:"yellow",
+                opacity:"0.7",
+                borderStyle:"solid",
+                borderColor:"grey",
+                borderRadius:"5px"
+              });        
+              countlyCommon.localSubnetMap.addOverlay(countlyCommon.NEW_SUBNET_XY["marker"]);                     // 将标注添加到地图中   
+           }
+
+           function showInfo(e){
+             if(countlyCommon.NEW_SUBNET_XY["marker"] != null){
+                countlyCommon.NEW_SUBNET_XY["marker"].remove();
+              }
+             addMarker(e.point,0);
+           }
+           countlyCommon.localSubnetMap.addEventListener("click", showInfo);
+
+        }
+
 
         function initCountrySelect(parent, countryCode, timezoneText, timezone) {
             $(parent + " #timezone-select").hide();
@@ -1608,7 +1781,10 @@ window.ManageAppsView = countlyView.extend({
             $("#app-add-timezone #app-timezone").val("");
             $("#app-add-timezone #app-country").val("");
             $("#app-add-timezone #timezone-select").hide();
+            $("#subnet-geo-input").val("");
             $(".required").hide();
+            $("#map-search-btn").hide();
+            $("#subnet-geo-input").hide();  
         }
 
         function showAdd() {
@@ -1616,12 +1792,23 @@ window.ManageAppsView = countlyView.extend({
             if ($("#app-container-new").is(":visible")) {
                 return false;
             }
+
+            $("#map-search-btn").show();
+            $("#subnet-geo-input").show();            
+
+            addview_setupmap();
+            countlyCommon.NEW_SUBNET_XY["marker_loc"] = null;
+
             $(".app-container").removeClass("active");
             $("#first-app-success").hide();
             hideEdit();
             var manageBarApp = $("#manage-new-app>div").clone();
             manageBarApp.attr("id", "app-container-new");
             manageBarApp.addClass("active");    
+
+            console.log("set class!");
+            $("#map-search-btn").removeClass("disabled");
+
 
             if (jQuery.isEmptyObject(countlyGlobal['apps'])) {
                 $("#cancel-app-add").hide();
@@ -1656,7 +1843,22 @@ window.ManageAppsView = countlyView.extend({
         }
 
         initAppManagement(appId);
-        initCountrySelect("#app-add-timezone");
+        initCountrySelect("#app-add-timezone");        
+        this.init_map();
+        //this.init_listview_map();
+        listview_setupmap(countlyCommon.ACTIVE_APP_ID);
+
+        $("#map-search-btn").click(function() {   
+            if( $("#map-search-btn").hasClass("disabled") )
+                return ;    
+
+            if( $("#subnet-geo-input").val()==""){
+                CountlyHelpers.alert(jQuery.i18n.map["management-applications.search-empty"], "red");
+                return false;
+            }
+            countlyCommon.localSearch.search($("#subnet-geo-input").val());
+
+        });
 
         $("#clear-app-data").click(function () {
             CountlyHelpers.confirm(jQuery.i18n.map["management-applications.clear-confirm"], "red", function (result) {
@@ -1696,7 +1898,7 @@ window.ManageAppsView = countlyView.extend({
                 });
             });
         });
-
+        
         $("#delete-app").click(function () {
             CountlyHelpers.confirm(jQuery.i18n.map["management-applications.delete-confirm"], "red", function (result) {
 
@@ -1732,6 +1934,7 @@ window.ManageAppsView = countlyView.extend({
                             $("#sidebar-app-select .logo").css("background-image", "");
                             $("#sidebar-app-select .text").text("");
                         }
+
                     },
                     error:function () {
                         CountlyHelpers.alert(jQuery.i18n.map["management-applications.delete-admin"], "red");
@@ -1748,6 +1951,10 @@ window.ManageAppsView = countlyView.extend({
                 $("#edit-app").addClass("active");
                 $(".read").hide();
                 $(".table-edit").show();
+                addview_setupmap();
+                $("#map-search-btn").show();
+                $("#subnet-geo-input").show(); 
+                $("#map-search-btn").removeClass("disabled");
             }
         });
 
@@ -1843,14 +2050,20 @@ window.ManageAppsView = countlyView.extend({
             hideEdit();
             var appId = $("#app-edit-id").val();
             initAppManagement(appId);
+            listview_setupmap(appId);
+            $("#map-search-btn").hide();
+            $("#subnet-geo-input").hide(); 
         });
 
         $(".app-container:not(#app-container-new)").live("click", function () {
             var appId = $(this).data("id");
+            var subnetInfo = countlyDevmgr.getSubnetById(appId);
+            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]), 15);
             hideEdit();
             $(".app-container").removeClass("active");
             $(this).addClass("active");
             initAppManagement(appId);
+            listview_setupmap(appId);
         });
 
         $("#add-app-button").click(function () {
@@ -1880,7 +2093,19 @@ window.ManageAppsView = countlyView.extend({
             var appName = $("#app-add-name").val(),
                 category = $("#app-add-category").data("value") + "",
                 timezone = $("#app-add-timezone #app-timezone").val(),
-                country = $("#app-add-timezone #app-country").val();
+                country = $("#app-add-timezone #app-country").val(),
+                lat = 0,
+                lng = 0;
+            
+            if( countlyCommon.NEW_SUBNET_XY["marker_loc"] != null ){
+                lat = countlyCommon.NEW_SUBNET_XY["marker_loc"].lat;
+                lng = countlyCommon.NEW_SUBNET_XY["marker_loc"].lng;
+                console.log("get the x,y of NEW_SUBNET_XY:");
+                console.log(lat);console.log(lng);
+            }else{
+                    CountlyHelpers.alert(jQuery.i18n.map["management-applications.subnet-location"], "red");
+                    return false;
+            }
 
             $(".required").fadeOut().remove();
             var reqSpan = $("<span>").addClass("required").text("*");
@@ -1918,7 +2143,9 @@ window.ManageAppsView = countlyView.extend({
                         name:appName,
                         category:category,
                         timezone:timezone,
-                        country:country
+                        country:country,
+                        lat:lat,
+                        lng:lng
                     }),
                     api_key:countlyGlobal['member'].api_key
                 },
@@ -1933,7 +2160,9 @@ window.ManageAppsView = countlyView.extend({
                         "key":data.key,
                         "category":data.category,
                         "timezone":data.timezone,
-                        "country":data.country
+                        "country":data.country,
+                        "lng":data.lng,
+                        "lat":data.lat
                     };
 
                     countlyGlobal['apps'][data._id] = newAppObj;
@@ -2351,11 +2580,65 @@ window.EventsView = countlyView.extend({
     }
 });
 
+/*
+ * TODO: - split the DeviceMgrView into two views, one for Geography management, 
+ *         the one for Device management.
+ */
 window.DeviceMgrView = countlyView.extend({
 
     initialize:function () {
         this.template = Handlebars.compile($("#template-devicemgr-export").html());
-    }, /* register the event handler */
+    }, 
+    init_map:function(){        
+        var _dev = countlyDevmgr.getCurrentDevice();
+        if( _.size(_dev) == 0) {
+            console.log("no device found!");
+            return false;
+        }
+        localMapDev = new BMap.Map("network-map");            // 创建Map实例
+        localMapDev.centerAndZoom(new BMap.Point(_dev[0]["lng"], _dev[0]["lat"]), 15);
+        localMapDev.addControl(new BMap.NavigationControl());   
+        localMapDev.enableScrollWheelZoom();                            //启用滚轮放大缩小
+
+        // set theme for map
+        var mapStyle={style : "default" };
+        localMapDev.setMapStyle(mapStyle);           
+        
+        var point = new BMap.Point(_dev[0]["lng"],_dev[0]["lat"]);   
+        // define the maker helper 
+        function addMarker(point, index){ 
+          var myIcon = new BMap.Icon("/images/dashboard/Map-Marker-Marker-Inside-Chartreuse-48.png", new BMap.Size(48, 48), {    
+             offset: new BMap.Size(10, 25),    
+             imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移    
+           });      
+          
+           //var markers = [];
+           var marker = new BMap.Marker(point ,{icon:myIcon}) ;       // 创建标注    
+           //markers.push(marker);
+           //var markerClusterer = new BMapLib.MarkerClusterer(localMapDev, {markers:markers});
+  
+            //marker.enableDragging();        
+            marker.addEventListener("click", function(){                
+            });  
+
+            var label = new BMap.Label(_dev[0]["hotspot_info"],{offset:new BMap.Size(5,-20)});
+            marker.setLabel(label);     
+
+          label.setStyle({                                   
+            backgroundColor:"yellow",
+            opacity:"0.7",
+            borderStyle:"solid",
+            borderColor:"grey",
+            borderRadius:"5px"
+          });
+
+        
+          localMapDev.addOverlay(marker);                     // 将标注添加到地图中   
+        }
+
+        addMarker(point,0);
+    }, 
+    /* register the event handler */
     pageScript:function () {
          $("#export-status-all").on('click', function () {
             alert("select status");
@@ -2370,7 +2653,148 @@ window.DeviceMgrView = countlyView.extend({
              alert("reset default!");
          });        
 
-         $("#devicemgr_button1").button();
+        $("#config-reboot-btn").click(function () {
+            if ($(this).hasClass("disabled")) {
+                 return true;
+            }
+
+            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.reboot"], "red", function (result) {
+                if (!result) {
+                    return true;
+                }
+
+                var serail_no = countlyDevmgr.getCurrentDevice();
+
+                $.ajax({
+                    type:"GET",
+                    url:countlyCommon.API_PARTS.apps.w + '/reset',
+                    data:{
+                        args:JSON.stringify({
+                            app_id:appId
+                        }),
+                        api_key:countlyGlobal['member'].api_key
+                    },
+                    dataType:"jsonp",
+                    success:function (result) {
+
+                        if (!result) {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
+                            return false;
+                        } else {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
+                        }
+                    }
+                });
+            });
+        });
+
+        $("#config-reset-btn").click(function () {
+            if ($(this).hasClass("disabled")) {
+                 return true;
+            }
+
+            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.reset"], "red", function (result) {
+                if (!result) {
+                    return true;
+                }
+
+                var appId = $("#app-edit-id").val();
+
+                $.ajax({
+                    type:"GET",
+                    url:countlyCommon.API_PARTS.apps.w + '/reset',
+                    data:{
+                        args:JSON.stringify({
+                            app_id:appId
+                        }),
+                        api_key:countlyGlobal['member'].api_key
+                    },
+                    dataType:"jsonp",
+                    success:function (result) {
+
+                        if (!result) {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
+                            return false;
+                        } else {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
+                        }
+                    }
+                });
+            });
+        });
+
+        $("#config-fireware-btn").click(function () {
+
+            if ($(this).hasClass("disabled")) {
+                 return true;
+            }
+
+            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.update-fireware"], "red", function (result) {
+                if (!result) {
+                    return true;
+                }
+
+                var appId = $("#app-edit-id").val();
+
+                $.ajax({
+                    type:"GET",
+                    url:countlyCommon.API_PARTS.apps.w + '/reset',
+                    data:{
+                        args:JSON.stringify({
+                            app_id:appId
+                        }),
+                        api_key:countlyGlobal['member'].api_key
+                    },
+                    dataType:"jsonp",
+                    success:function (result) {
+
+                        if (!result) {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
+                            return false;
+                        } else {
+                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
+                        }
+                    }
+                });
+            });
+        });
+
+        $("#config-apply-btn").click(function(){
+            console.log("click the apply");
+
+            $(".required").fadeOut().remove();
+            var reqSpan = $("<span>").addClass("required").text("*");
+            var modeName = $("#mode-add-category").data("value");  
+            var hotspotName = $("#hotspot-name-input").val();
+            var channelName = $("#channel-add-category").data("value"); 
+
+            if (!hotspotName) {
+                $("#hotspot-name-input").after(reqSpan.clone());
+            }
+            if (!modeName) {
+                $("#mode-add-category").parents(".cly-select").after(reqSpan.clone());
+            }
+            if (!channelName) {
+                $("#channel-add-category").parents(".cly-select").after(reqSpan.clone());
+            }            
+
+            if ($(".required").length) {
+                $(".required").fadeIn();
+                return false;
+            }
+
+        });
+
+        $("#config-cancel-btn").click(function(){
+        $("#hotspot-name-input").val("");
+        $("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+        $("#channel-add-category").data("value", "");
+        $("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+        $("#mode-add-category").data("value", "");    
+        
+
+            console.log("enter cancel!");
+        });
 
         $("#add-dev-button").click(function () {
             var devName = "Test Hotspot 1";
@@ -2383,44 +2807,62 @@ window.DeviceMgrView = countlyView.extend({
             manageBarApp.addClass("active");
 
             $("#dev-management-bar .scrollable").append(manageBarApp);
-
         });     
-        
+/*        
         $(".dev-container:not(#app-container-new)").live("click", function () {
-            /*
-            var appId = $(this).data("id");
-            hideEdit();
-            $(".app-container").removeClass("active");
-            $(this).addClass("active");
-            initAppManagement(appId);
-            */
              $(".dev-container").removeClass("active");
              $(this).addClass("active");
+             
+             var appId = $(this).data("data-id");
+             countlyCommon.setActiveDev($(this).attr('data-id'));      
+             console.log("get current device:");
+             console.log(countlyCommon.ACTIVE_DEV);
+
+             self.activeView.appChanged();
+
         });
+*/
 
     }, /* refresh the view */
     renderCommon:function () {
         /* render the view */   
+        var _devices = countlyDevmgr.getDevicesBySubnet(app.activeAppName); 
+        var _currentDev = countlyDevmgr.getCurrentDevice();
+        console.log(_currentDev[0]["serial_no"]);
         $(this.el).html(this.template({
             events:countlyEvent.getEventsWithSegmentations(),
             app_name:app.activeAppName,
             exports:[],
-            hotspot_name:"hotspot",
-            serial_num:"00:20:60:00:00:22",
-            hw_model:"SmartAd Model II",
-            register_time:"2009/08/08-21:00",
-            online_status:"在线",
-            fireware_ver:"1.0.8",
-            ip_addr:"100.0.0.245",
-            hotspot_info:"天府大道软件园B8-F1室内热点",
-            fireware_event:"  "
+            fireware_event:"  ",
+            devicesItem:_devices ,
+            currentDev:_currentDev
         }));
+        
 
-       $("#dev-management-bar .app-container").removeClass("active");
+        console.log(countlyDevmgr.isFirewareUpdate(_currentDev[0]["serial_no"]));
+        if( countlyDevmgr.isFirewareUpdate(_currentDev[0]["serial_no"])){
+          $("#config-reset-btn").removeClass("disabled");
+          $("#badge_fireware_msg").css("background-color","#b94a48");  
+          $("#badge_fireware_msg").text("update");  
+        }else{
+
+            $("#config-fireware-btn").addClass("disabled");
+        }
+
+       $("#dev-management-bar .dev-container").removeClass("active");
        $("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
        $("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+
+        if(_.size(_devices) > 0){
+            if(countlyCommon.ACTIVE_DEV == 0)
+                 countlyCommon.setActiveDev(_devices[0]["serial_no"]);
+            $("#dev-management-bar .dev-container").removeClass("active");
+            $("#dev-management-bar .dev-container[data-id='" + countlyCommon.ACTIVE_DEV + "']").addClass("active");        
+        }
+
         /*$("#device-management-bar .app-container[data-id='" + appId + "']").addClass("active");  */
         /* register the handler */
+        this.init_map();
         this.pageScript();
 
 	    $("#devicecfg_tabs").tabs({
@@ -2431,7 +2873,7 @@ window.DeviceMgrView = countlyView.extend({
               console.log(ui.index);            
               // And this will get you it's name
             }
-        });	    devicecfg_tabs
+        });	   
     }, /* refere the view if the subnetwork change */
     appChanged:function () {
        /*this.renderCommon();*/
@@ -2439,42 +2881,74 @@ window.DeviceMgrView = countlyView.extend({
     }
 });
 
-window.DeviceMgrAutoView = countlyView.extend({
+window.ManageTempView = countlyView.extend({
+    template:null,
     initialize:function () {
-        this.template = Handlebars.compile($("#template-deviceautoconf-export").html());
-    }, /* register the event handler */
-    pageScript:function () {
-         $("#devicecfg_tabs").on('click', function () {
-            alert("select status");
-         });
-         $("#devicemgr_button1").button();
+        var self = this;
+        //this.template = Handlebars.compile($("#auto-template-export").html());
+        //Handlebars.registerPartial("template-condition-box", $("#template-condition-categories").html());
+        T.render('templates/autotemp', function (t) {
+            self.template = t;
+        });
         
-    }, /* refresh the view */
-    renderCommon:function () {
-        /* render the view */
+    },
+    renderCommon:function (isRefresh) {
+        var self = this;
+/*
         $(this.el).html(this.template({
-            events:countlyEvent.getEventsWithSegmentations(),
-            app_name:app.activeAppName,
-            exports:[]
+            apps:countlyGlobal['apps']
         }));
-      
-        /* register the handler */
-        this.pageScript();
-
-        $("#devicecfg_tabs").tabs({
-        select: function(event,ui) {
-        alert(document.compatMode);
-        // You need Firebug or the developer tools on your browser open to see these
-        console.log(event);
-        // This will get you the index of the tab you selected
-        console.log(ui.index);
-        // And this will get you it's name
-
+*/
+        var templates = countlyDevmgr.getTemplateByUser("test");
+        console.log(_.size(templates));
+        $.ajax({
+            url:countlyCommon.API_PARTS.users.r + '/all',
+            data:{
+                api_key:countlyGlobal['member'].api_key
+            },
+            dataType:"jsonp",
+            success:function (users) {
+               // var templates = countlyDevmgr.getTemplateByUser("test");
+                $('#content').html(self.template({
+                    users:users,
+                    apps:countlyGlobal['apps'],
+                    temp_items:templates["templates"],
+                    temps_num:_.size(templates["templates"]),
+                    temp_params:templates["params"]
+                }));
+            }
+        });
+    
     }
-        }); 
-    }, /* refere the view if the subnetwork change */
-    appChanged:function () {
-       this.renderCommon();
+});
+
+window.DeviceMgrAutoView = countlyView.extend({
+    template:null,
+    initialize:function () {
+        this.template = Handlebars.compile($("#auto-template-export").html());
+        T.render('templates/users', function (t) {
+            self.template = t;
+        });
+    }, /* register the event handler */
+    renderCommon:function () {
+        var self = this;
+        //$('#content').html(self.template({
+        //}));
+         /*
+        $.ajax({
+            url:countlyCommon.API_PARTS.users.r + '/all',
+            data:{
+                api_key:countlyGlobal['member'].api_key
+            },
+            dataType:"jsonp",
+            success:function (users) {
+                $('#content').html(self.template({
+                    users:users,
+                    apps:countlyGlobal['apps']
+                }));
+            }
+        });
+        */
     }
 });
 
@@ -2496,7 +2970,7 @@ var AppRouter = Backbone.Router.extend({
         "/manage/apps":"manageApps",
         "/manage/users":"manageUsers",
         "/devicemgr/config":"devicecfg",
-        "/devicemgr/autoconf":"autocfg",
+        "/devicemgr/autoconf":"manageTemps",
         "*path":"main"
     },
     activeView:null, //current view
@@ -2555,8 +3029,8 @@ var AppRouter = Backbone.Router.extend({
     devicecfg:function(){
         this.renderWhenReady(this.devicesView);
     },
-    autocfg:function(){
-        this.renderWhenReady(this.devicesAutoView);
+    manageTemps:function(){
+        this.renderWhenReady(this.manageTempsView);
     },    
     refreshActiveView:function () {
     }, //refresh interval function
@@ -2604,7 +3078,7 @@ var AppRouter = Backbone.Router.extend({
         this.resolutionsView = new ResolutionView();
         this.durationsView = new DurationView();
         this.devicesView = new DeviceMgrView();
-        this.devicesAutoView = new DeviceMgrAutoView();
+        this.manageTempsView = new ManageTempView();
 
         Handlebars.registerPartial("date-selector", $("#template-date-selector").html());
         Handlebars.registerPartial("timezones", $("#template-timezones").html());
@@ -2615,6 +3089,9 @@ var AppRouter = Backbone.Router.extend({
         Handlebars.registerPartial("hotspot-box", $("#hotspot-box-export").html());
         Handlebars.registerPartial("remote-op-box", $("#remote-op-box-export").html());
         Handlebars.registerPartial("filter-box", $("#filter-box-export").html());
+        Handlebars.registerPartial("template-condition-box", $("#template-condition-categories").html());
+        Handlebars.registerPartial("template-compare-box", $("#template-compare-categories").html());
+
         Handlebars.registerHelper('eachOfObject', function (context, options) {
             var ret = "";
             for (var prop in context) {
@@ -2652,7 +3129,6 @@ var AppRouter = Backbone.Router.extend({
         });
         Handlebars.registerHelper('appIdsToNames', function (context, options) {
             var ret = "";
-
             for (var i = 0; i < context.length; i++) {
                 if (!countlyGlobal['apps'][context[i]]) {
                     continue;
@@ -2794,7 +3270,7 @@ var AppRouter = Backbone.Router.extend({
                     $("#app-nav").animate({left:'31px'}, {duration:500, easing:'easeInBack'});
                     return false;
                 }
-
+                console.log("click the app-nav:"+appName);
                 self.activeAppName = appName;
                 self.activeAppKey = appKey;
 
@@ -2808,6 +3284,20 @@ var AppRouter = Backbone.Router.extend({
 
 
             });
+
+
+        $(".dev-container:not(#app-container-new)").live("click", function () {
+             $(".dev-container").removeClass("active");
+             $(this).addClass("active");
+             
+             var appId = $(this).data("data-id");
+             countlyCommon.setActiveDev($(this).attr('data-id'));      
+             console.log("get current device:");
+             console.log(countlyCommon.ACTIVE_DEV);
+
+             self.activeView.appChanged();
+
+        });
 
             $("#sidebar-events").click(function (e) {
                 $.when(countlyEvent.refreshEvents()).then(function () {
