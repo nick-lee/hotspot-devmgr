@@ -24,7 +24,6 @@
 	<script type="text/javascript" src="http://api.map.baidu.com/library/MarkerClusterer/1.2/src/MarkerClusterer_min.js"></script>
     <!-- <link rel="stylesheet" href="/stylesheets/bootstrap-cust/css/bootstrap.css"> -->
     <link rel="stylesheet" href="/stylesheets/bootstrap/css/bootstrap.css">  
-	
 
     <!-- Custome CSS -->
 <!--
@@ -412,9 +411,9 @@
 	</script>
 
 	<script id="template-condition-categories" type="text/x-handlebars-template">
-		<div data-value="1" class="item" data-localize="">802.11 b</div>
-		<div data-value="2" class="item" data-localize="">802.11 g</div>
-		<div data-value="3" class="item" data-localize="">802.11 n</div>
+		<div data-value="1" class="item" data-localize="">序列号</div>
+		<div data-value="2" class="item" data-localize="">子网ID</div>
+		<div data-value="3" class="item" data-localize="">MAC地址</div>
 	</script>
 
 	<script id="template-compare-categories" type="text/x-handlebars-template">
@@ -427,6 +426,7 @@
 		<div data-value="1" class="item" data-localize="">802.11 b</div>
 		<div data-value="2" class="item" data-localize="">802.11 g</div>
 		<div data-value="3" class="item" data-localize="">802.11 n</div>
+		<div data-value="4" class="item" data-localize="">802.11 b/g/n</div>
 	</script>
 
 	<script id="template-channel-categories" type="text/x-handlebars-template">
@@ -1247,11 +1247,11 @@
 
 	<script id="status-box-export" type="text/x-handlebars-template">
 	{{#each currentDev}}
-	  <div class="row">
+	  <div class="row" style="font-size:16px;">
         <div class="col-md-2">
         	<img src="/images/management/router.png" alt="Smiley face" height="120" width="120">          
         </div>
-        <div class="col-md-10">
+        <div class="col-md-10" >
           <div class="row">
             <div class="col-md-2" style="font-weight:bold;">序列号:</div>
             <div class="col-md-4">{{this.serial_no}}</div>
@@ -1287,7 +1287,7 @@
 	</script>
 
 	<script id="hotspot-box-export" type="text/x-handlebars-template">
-
+	  {{#each hotspotParams}}	
 	  <div class="row">
         <div class="col-md-12">
           <div class="row">
@@ -1297,13 +1297,14 @@
               <div class="cly-select" style="width:220px;">
 			    <div class="select-inner">
 			    	<div class="text-container">
-			    		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
+			    		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip">
+			    		{{this.channel}}</div>
 			    	</div>
 			    	<div class="right combo"></div>
 			    </div>
 			    <div class="select-items square" style="width:220px;">
 			    	<div class="scrollable">
-			    		{{> mode-categories }}
+			    		{{> channel-categories}}
 			    	</div>
 			    </div>
               </div>   	          
@@ -1315,13 +1316,15 @@
               <div class="cly-select" style="width:220px;">
 			    <div class="select-inner">
 			    	<div class="text-container">
-			    		<div class="text" id="mode-add-category" data-localize="manaapplications.category.tip"></div>
+			    		<div class="text" id="mode-add-category" data-localize="manaapplications.category.tip">
+			    			{{ this.mode}} 
+			    		</div>
 			    	</div>
 			    	<div class="right combo"></div>
 			    </div>
 			    <div class="select-items square" style="width:220px;">
 			    	<div class="scrollable">
-			    		{{> channel-categories }}
+			    		{{> mode-categories  }}
 			    	</div>
 			    </div>
               </div>   	          
@@ -1333,7 +1336,7 @@
           <div class="row">
             <div class="col-md-2" id="hotspot-name-label" style="font-weight:bold;">热点名称:</div>
             <div class="col-md-9">
-				<input class="username-text" id="hotspot-name-input" style="width:100%;" type="text" value=""/><br/>
+				<input class="username-text" id="hotspot-name-input" style="width:100%;" type="text" value="{{this.hotspot_info}}"/><br/>
             </div>
             <div class="col-md-1" style="font-weight:bold;"></div>
           </div>
@@ -1356,8 +1359,8 @@
             </div>
           </div>
         </div>
-
       </div>
+      {{/each}}
 
 	</script>
 
@@ -1439,7 +1442,7 @@
 			</div>
 
 			<div id="manage-new-app" style="margin-left:187px; " class="active" > 	
-				<div class="app-container" >
+				<div class="app-container grid-border" >
 					<div class="logo"></div>
 					<div class="name" data-localize="management-applications.my-new-app"></div>
 				</div>
@@ -1467,13 +1470,13 @@
 			<div id=deivcecfg_header class="widget-header ">
 			    <div id="devicecfg_tabs" class="widget-content">
 			    	<ul>
-		        	    <li><a href=#tab1 class="tabs-widget-header" data-localize="sidebar.devicemgr.status"></a></li>
-		  	       		<li><a href=#tab2 class="tabs-widget-header" data-localize="sidebar.devicemgr.hotspot.config"></a></li>
-		  	       		<li><a href=#tab3 class="tabs-widget-header" data-localize="sidebar.devicemgr.remoteop"></a></li>
+		        	    <li><a href=#devcfg_tab1 class="tabs-widget-header" data-localize="sidebar.devicemgr.status"></a></li>
+		  	       		<li><a href=#devcfg_tab2 class="tabs-widget-header" data-localize="sidebar.devicemgr.hotspot.config"></a></li>
+		  	       		<li><a href=#devcfg_tab3 class="tabs-widget-header" data-localize="sidebar.devicemgr.remoteop"></a></li>
 		        	</ul>
-		        	<div id=tab1>{{> status-box }}</div>
-		        	<div id=tab2>{{> hotspot-box }}</div>
-		        	<div id=tab3>{{> remote-op-box }}</div>
+		        	<div id="devcfg_tab1">{{> status-box }}</div>
+		        	<div id="devcfg_tab2">{{> hotspot-box }}</div>
+		        	<div id="devcfg_tab3">{{> remote-op-box }}</div>
 			    </div>
 			</div>
 		</div>		
@@ -1559,10 +1562,7 @@
 	<script language="javascript" type="text/javascript" src="/javascripts/countly/countly.app.version.js"></script>
 	<script language="javascript" type="text/javascript" src="/javascripts/countly/countly.carrier.js"></script>
 	<script language="javascript" type="text/javascript" src="/javascripts/countly/countly.template.js"></script>
- <!--       <script>
-                $("#devicecfg_tabs").tabs ();
-        </script>
--->
+
     <% if (member.in_user_id && member.in_user_hash) { %>
     <!---->
     <script id="IntercomSettingsScriptTag">

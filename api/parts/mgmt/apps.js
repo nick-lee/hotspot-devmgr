@@ -69,7 +69,9 @@ var appsApi = {},
                 'name':     { 'required': true, 'type': 'String' },
                 'country':  { 'required': false, 'type': 'String' },
                 'category': { 'required': false, 'type': 'String' },
-                'timezone': { 'required': false, 'type': 'String' }
+                'timezone': { 'required': false, 'type': 'String' },
+                'lng': { 'required': false, 'type': 'Number' },
+                'lat': { 'required': false, 'type': 'Number' }
             },
             newApp = {};
 
@@ -98,7 +100,9 @@ var appsApi = {},
                 'name':     { 'required': false, 'type': 'String' },
                 'category': { 'required': false, 'type': 'String' },
                 'timezone': { 'required': false, 'type': 'String' },
-                'country':  { 'required': false, 'type': 'String' }
+                'country':  { 'required': false, 'type': 'String' },
+                'lng': { 'required': false, 'type': 'Number' },
+                'lat': { 'required': false, 'type': 'Number' }
             },
             updatedApp = {};
 
@@ -229,7 +233,9 @@ var appsApi = {},
                 'country' : apps[i].country,
                 'key' : apps[i].key,
                 'name' : apps[i].name,
-                'timezone' : apps[i].timezone
+                'timezone' : apps[i].timezone,
+		'lng' : apps[i].lng,
+	    	'lat' : apps[i].lat
             };
         }
 

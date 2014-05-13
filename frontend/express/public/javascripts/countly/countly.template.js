@@ -204,19 +204,23 @@ $.extend(Template.prototype, {
     }
 
     $(document).ready(function () {
+        
         $("#overlay").click(function () {
-            $(".dialog:visible").fadeOut().remove();
-            $(this).hide();
+            if(!countlyCommon.maskDashboard){
+                $(".dialog:visible").fadeOut().remove();
+                $(this).hide();
+            }
         });
-
-        $("#dialog-ok, #dialog-cancel, #dialog-continue").live('click', function () {
+         $("#dialog-ok, #dialog-cancel, #dialog-continue").live('click', function () {
+            
             $(".dialog:visible").fadeOut().remove();
-            $("#overlay").hide();
+            if(!countlyCommon.maskDashboard){
+                $("#overlay").hide();
+            }
         });
-
-        $(document).keyup(function (e) {
-            // ESC
-            if (e.keyCode == 27) {
+         $(document).keyup(function (e) {
+        // ESC
+        if (e.keyCode == 27) {
                 var elTop = $(".dialog:visible").offset().top;
 
                 $(".dialog:visible").animate({
@@ -231,8 +235,9 @@ $.extend(Template.prototype, {
                 });
 
                 $("#overlay").hide();
-            }
+        }
         });
+        
     });
 
 }(window.CountlyHelpers = window.CountlyHelpers || {}, jQuery));
@@ -1432,63 +1437,63 @@ window.ManageAppsView = countlyView.extend({
     init_map:function(){
         //var _currentDev = countlyDevmgr.getCurrentDevice();
 
-        countlyCommon.localSubnetMap = new BMap.Map("network-map-new");
-        /*            
-        if(_.size(_currentDev) == 0)
-            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
-        else
-            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(_currentDev[0]["aix"],_currentDev[0]["aiy"]),11);
-        */
-        countlyCommon.localSubnetMap.addControl(new BMap.NavigationControl());   
-        countlyCommon.localSubnetMap.enableScrollWheelZoom();
-        /*    
-        var subnet_marker = null;
-        function addMarker(point, index){ 
-        var myIcon = new BMap.Icon("images/dashboard/Map-Marker-Bubble-Pink-icon-64.png", new BMap.Size(64, 64), {    
-           offset: new BMap.Size(10, 25),    
-           imageOffset: new BMap.Size(0, 0 - index * 25)  
-         });       
-        
-         subnet_marker = new BMap.Marker(point ,{icon:myIcon}) ;    
-          subnet_marker.enableDragging();        
-          subnet_marker.addEventListener("click", function(e){ 
-          });  
-
-          subnet_marker.addEventListener("mousedown",function(){
-            console.log("mousedown");
-          });
-
-          subnet_marker.addEventListener("mouseover",function(){
-            console.log("mouseover");
-          });
-
-          subnet_marker.addEventListener("mouseup",function(e){
-            console.log("mouseup");
-            console.log(e.point);
-            countlyCommon.NEW_SUBNET_XY["marker_loc"] = e.point; 
-          });
-
-          if ($("#app-add-name").val() == "" )
-             var label = new BMap.Label("新建热点子网",{offset:new BMap.Size(5,-20)});
-          else
-             var label = new BMap.Label($("#app-add-name").val(),{offset:new BMap.Size(5,-20)});
-
-          subnet_marker.setLabel(label);     
-
-          label.setStyle({                                   
-            backgroundColor:"yellow",
-            opacity:"0.7",
-            borderStyle:"solid",
-            borderColor:"grey",
-            borderRadius:"5px"
-          });        
-          countlyCommon.localSubnetMap.addOverlay(subnet_marker);                     // 将标注添加到地图中   
+        try
+        {
+            countlyCommon.localSubnetMap = new BMap.Map("network-map-new");
+            countlyCommon.localSubnetMap.addControl(new BMap.NavigationControl());   
+            countlyCommon.localSubnetMap.enableScrollWheelZoom();
+            /*    
+            var subnet_marker = null;
+            function addMarker(point, index){ 
+            var myIcon = new BMap.Icon("images/dashboard/Map-Marker-Bubble-Pink-icon-64.png", new BMap.Size(64, 64), {    
+               offset: new BMap.Size(10, 25),    
+               imageOffset: new BMap.Size(0, 0 - index * 25)  
+             });       
+            
+             subnet_marker = new BMap.Marker(point ,{icon:myIcon}) ;    
+              subnet_marker.enableDragging();        
+              subnet_marker.addEventListener("click", function(e){ 
+              });  
+    
+              subnet_marker.addEventListener("mousedown",function(){
+                console.log("mousedown");
+              });
+    
+              subnet_marker.addEventListener("mouseover",function(){
+                console.log("mouseover");
+              });
+    
+              subnet_marker.addEventListener("mouseup",function(e){
+                console.log("mouseup");
+                console.log(e.point);
+                countlyCommon.NEW_SUBNET_XY["marker_loc"] = e.point; 
+              });
+    
+              if ($("#app-add-name").val() == "" )
+                 var label = new BMap.Label("新建热点子网",{offset:new BMap.Size(5,-20)});
+              else
+                 var label = new BMap.Label($("#app-add-name").val(),{offset:new BMap.Size(5,-20)});
+    
+              subnet_marker.setLabel(label);     
+    
+              label.setStyle({                                   
+                backgroundColor:"yellow",
+                opacity:"0.7",
+                borderStyle:"solid",
+                borderColor:"grey",
+                borderRadius:"5px"
+              });        
+              countlyCommon.localSubnetMap.addOverlay(subnet_marker);                     // 将标注添加到地图中   
+            }
+            */   
+            /* use search only for new network */
+            countlyCommon.localSearch = new BMap.LocalSearch(countlyCommon.localSubnetMap, {
+              renderOptions:{map: countlyCommon.localSubnetMap}
+            });
         }
-        */   
-        /* use search only for new network */
-        countlyCommon.localSearch = new BMap.LocalSearch(countlyCommon.localSubnetMap, {
-          renderOptions:{map: countlyCommon.localSubnetMap}
-        });
+        catch (err) {
+            console.log("map can't be initialized, checking the network connection please! ");
+        }
             
         //countlyCommon.localSearch.search(location);
         /*
@@ -1503,10 +1508,10 @@ window.ManageAppsView = countlyView.extend({
     },
     renderCommon:function () {
         console.log("finish render the tempalte!");
-        console.log(MY_APP.Flickr.api_key);
+        //console.log(MY_APP.Flickr.api_key);
         $(this.el).html(this.template({
             admin_apps:countlyGlobal['admin_apps'],
-            test_appname:MY_APP.Flickr.api_key
+            //test_appname:MY_APP.Flickr.api_key
         }));
 
 		var appCategories = { 1:jQuery.i18n.map["application-category.books"], 2:jQuery.i18n.map["application-category.business"], 3:jQuery.i18n.map["application-category.education"], 4:jQuery.i18n.map["application-category.entertainment"], 5:jQuery.i18n.map["application-category.finance"], 6:jQuery.i18n.map["application-category.games"], 7:jQuery.i18n.map["application-category.health-fitness"], 8:jQuery.i18n.map["application-category.lifestyle"], 9:jQuery.i18n.map["application-category.medical"], 10:jQuery.i18n.map["application-category.music"], 11:jQuery.i18n.map["application-category.navigation"], 12:jQuery.i18n.map["application-category.news"], 13:jQuery.i18n.map["application-category.photography"], 14:jQuery.i18n.map["application-category.productivity"], 15:jQuery.i18n.map["application-category.reference"], 16:jQuery.i18n.map["application-category.social-networking"], 17:jQuery.i18n.map["application-category.sports"], 18:jQuery.i18n.map["application-category.travel"], 19:jQuery.i18n.map["application-category.utilities"], 20:jQuery.i18n.map["application-category.weather"]},
@@ -1581,15 +1586,21 @@ window.ManageAppsView = countlyView.extend({
           /**
            * get current subnetwork, and point it on map 
            */
+
            var subnetInfo = countlyDevmgr.getSubnetById(appId);
-           console.log(appId);
+           
+           if(subnetInfo==null)
+              return;
+
            if(countlyCommon.VIEW_SUBNET_XY["marker"] != null)
                 countlyCommon.VIEW_SUBNET_XY["marker"].remove();
-           countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]),15);
-           countlyCommon.VIEW_SUBNET_XY["marker"] = new BMap.Marker(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]));  // 创建标注
+
+           countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo["lng"],subnetInfo["lat"]),15);
+           countlyCommon.VIEW_SUBNET_XY["marker"] = new BMap.Marker(new BMap.Point(subnetInfo["lng"],subnetInfo["lat"]));  // 创建标注
            countlyCommon.localSubnetMap.addOverlay(countlyCommon.VIEW_SUBNET_XY["marker"]);      
-  
-           var label = new BMap.Label(subnetInfo[0]["name"],{offset:new BMap.Size(-15,-20)});
+            console.log("label ::");
+            console.log(subnetInfo);
+           var label = new BMap.Label(subnetInfo["name"],{offset:new BMap.Size(-15,-20)});
   
            countlyCommon.VIEW_SUBNET_XY["marker"].setLabel(label);     
            label.setStyle({                                   
@@ -1598,21 +1609,30 @@ window.ManageAppsView = countlyView.extend({
               borderStyle:"solid",
               borderColor:"grey",
               borderRadius:"5px"
-            }); 
+            });
+            
         }
 
         function addview_setupmap(){
           /**
            * get current subnetwork, and point it on map 
            */
+
+
            var subnetInfo = countlyDevmgr.getSubnetById(countlyCommon.ACTIVE_APP_ID);
 
-           /* set default view to current selected subnetwork */
+           
            if(countlyCommon.NEW_SUBNET_XY["marker"] != null)
                 countlyCommon.NEW_SUBNET_XY["marker"].remove();
            if(countlyCommon.VIEW_SUBNET_XY["marker"] != null)
-                countlyCommon.VIEW_SUBNET_XY["marker"].remove();            
-           countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]),15);
+                countlyCommon.VIEW_SUBNET_XY["marker"].remove();  
+
+            console.log(subnetInfo);
+
+            if (_.size(subnetInfo) != 0)
+                countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo["lng"],subnetInfo["lat"]),15);
+            else
+                countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(104.07854,30.548681),15);
 
            function addMarker(point, index){ 
                var myIcon = new BMap.Icon("images/dashboard/Map-Marker-32.png", new BMap.Size(32, 32), {    
@@ -1842,10 +1862,9 @@ window.ManageAppsView = countlyView.extend({
             $("#view-app").show();
         }
 
+        this.init_map();
         initAppManagement(appId);
         initCountrySelect("#app-add-timezone");        
-        this.init_map();
-        //this.init_listview_map();
         listview_setupmap(countlyCommon.ACTIVE_APP_ID);
 
         $("#map-search-btn").click(function() {   
@@ -2058,7 +2077,7 @@ window.ManageAppsView = countlyView.extend({
         $(".app-container:not(#app-container-new)").live("click", function () {
             var appId = $(this).data("id");
             var subnetInfo = countlyDevmgr.getSubnetById(appId);
-            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo[0]["lng"],subnetInfo[0]["lat"]), 15);
+            countlyCommon.localSubnetMap.centerAndZoom(new BMap.Point(subnetInfo.lng,subnetInfo.lat), 15);
             hideEdit();
             $(".app-container").removeClass("active");
             $(this).addClass("active");
@@ -2589,54 +2608,87 @@ window.DeviceMgrView = countlyView.extend({
     initialize:function () {
         this.template = Handlebars.compile($("#template-devicemgr-export").html());
     }, 
-    init_map:function(){        
-        var _dev = countlyDevmgr.getCurrentDevice();
-        if( _.size(_dev) == 0) {
-            console.log("no device found!");
+    init_map:function(){   
+        var _subnet = countlyDevmgr.getSubnetById(countlyCommon.ACTIVE_APP_ID);        
+        if( _.size(_subnet) == 0) {
+            console.log("no subnet active!");
             return false;
         }
-        localMapDev = new BMap.Map("network-map");            // 创建Map实例
-        localMapDev.centerAndZoom(new BMap.Point(_dev[0]["lng"], _dev[0]["lat"]), 15);
-        localMapDev.addControl(new BMap.NavigationControl());   
-        localMapDev.enableScrollWheelZoom();                            //启用滚轮放大缩小
 
-        // set theme for map
-        var mapStyle={style : "default" };
-        localMapDev.setMapStyle(mapStyle);           
-        
-        var point = new BMap.Point(_dev[0]["lng"],_dev[0]["lat"]);   
-        // define the maker helper 
-        function addMarker(point, index){ 
-          var myIcon = new BMap.Icon("/images/dashboard/Map-Marker-Marker-Inside-Chartreuse-48.png", new BMap.Size(48, 48), {    
-             offset: new BMap.Size(10, 25),    
-             imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移    
-           });      
-          
-           //var markers = [];
-           var marker = new BMap.Marker(point ,{icon:myIcon}) ;       // 创建标注    
-           //markers.push(marker);
-           //var markerClusterer = new BMapLib.MarkerClusterer(localMapDev, {markers:markers});
-  
-            //marker.enableDragging();        
-            marker.addEventListener("click", function(){                
-            });  
-
-            var label = new BMap.Label(_dev[0]["hotspot_info"],{offset:new BMap.Size(5,-20)});
-            marker.setLabel(label);     
-
-          label.setStyle({                                   
-            backgroundColor:"yellow",
-            opacity:"0.7",
-            borderStyle:"solid",
-            borderColor:"grey",
-            borderRadius:"5px"
-          });
-
-        
-          localMapDev.addOverlay(marker);                     // 将标注添加到地图中   
+        try {
+            localMapDev = new BMap.Map("network-map");            // 创建Map实例
+            localMapDev.centerAndZoom(new BMap.Point(_subnet["lng"], _subnet["lat"]), 15);
+            localMapDev.addControl(new BMap.NavigationControl());   
+            localMapDev.enableScrollWheelZoom();                            //启用滚轮放大缩小
+       
+            // set theme for map
+            var mapStyle={style : "default" };
+            localMapDev.setMapStyle(mapStyle);           
+            
+            var point = new BMap.Point(_subnet["lng"],_subnet["lat"]);   
+            // define the maker helper 
+            function addMarker(point, index){ 
+              var myIcon = new BMap.Icon("/images/dashboard/Map-Marker-Marker-Inside-Pink-48.png", new BMap.Size(48, 48), {    
+                 offset: new BMap.Size(10, 25),    
+                 imageOffset: new BMap.Size(0, 0 - index * 25)   // 设置图片偏移    
+               });      
+              
+               //var markers = [];
+               var marker = new BMap.Marker(point ,{icon:myIcon}) ;       // 创建标注    
+               //markers.push(marker);
+               //var markerClusterer = new BMapLib.MarkerClusterer(localMapDev, {markers:markers});
+       
+                //marker.enableDragging();        
+                marker.addEventListener("click", function(){                
+                });  
+       
+                var _dev = countlyDevmgr.getCurrentDevice();
+           
+                if(_.size(_dev) != 0 ) {
+                    //var label = new BMap.Label(_dev[0].hotspot_info,{offset:new BMap.Size(5,-20)});
+                    //marker.setLabel(label); 
+                    if(_dev[0].subnetId == countlyCommon.ACTIVE_APP_ID){
+                        var opts = {
+                           width : 200,     // 信息窗口宽度
+                           height: 60,     // 信息窗口高度
+                           title : _dev[0].serial_no , // 信息窗口标题
+                           enableMessage:false,//设置允许信息窗发送短息
+                           message:"",
+                           offset: new BMap.Size(5,-22)
+                        }                     
+                        var infoWindow = new BMap.InfoWindow(_dev[0].hotspot_info, opts);  // 创建信息窗口对象
+                    }else{                    
+                        var subnetInfo = countlyDevmgr.getSubnetById(countlyCommon.ACTIVE_APP_ID);
+                        var opts1 = {
+                           width : 200,     // 信息窗口宽度
+                           height: 60,     // 信息窗口高度
+                           title : "无线热点网络" , // 信息窗口标题
+                           enableMessage:false,//设置允许信息窗发送短息
+                           message:"",
+                           offset: new BMap.Size(5,-22)
+                        }                                             
+                        var infoWindow = new BMap.InfoWindow(subnetInfo.name, opts1); 
+                    }
+                    localMapDev.openInfoWindow(infoWindow,point); //开启信息窗口
+       
+                }
+                /*** 
+                label.setStyle({                                   
+                  backgroundColor:"yellow",
+                  opacity:"0.7",
+                  borderStyle:"solid",
+                  borderColor:"grey",
+                  borderRadius:"5px",
+                });
+                */
+            
+              localMapDev.addOverlay(marker);                     // 将标注添加到地图中   
+            }
+       
+            addMarker(point,0);
+        } catch(err){
+            console.log("map can't be initialized, checking the network connection please! ");
         }
-
-        addMarker(point,0);
     }, 
     /* register the event handler */
     pageScript:function () {
@@ -2654,37 +2706,48 @@ window.DeviceMgrView = countlyView.extend({
          });        
 
         $("#config-reboot-btn").click(function () {
+            var _dev = countlyDevmgr.getCurrentDevice()
+
+            if( _.size(_dev) == 0 ){
+                console.log("current device null, return false");
+                return true;
+            }
+                
             if ($(this).hasClass("disabled")) {
                  return true;
             }
-
-            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.reboot"], "red", function (result) {
+            countlyCommon.maskDashboard = 1;
+           // var _string ="";
+            //_string.concat( jQuery.i18n.map["management-applications.reboot"] , "设备ID:" , countlyCommon.ACTIVE_DEV , ".");  
+            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.reboot"] , "red", function (result) {
                 if (!result) {
+                    console.log("cancel the operation!");
+                    countlyCommon.maskDashboard = 0;
                     return true;
                 }
-
-                var serail_no = countlyDevmgr.getCurrentDevice();
-
-                $.ajax({
-                    type:"GET",
-                    url:countlyCommon.API_PARTS.apps.w + '/reset',
-                    data:{
-                        args:JSON.stringify({
-                            app_id:appId
-                        }),
-                        api_key:countlyGlobal['member'].api_key
-                    },
-                    dataType:"jsonp",
+                $('body').css('cursor', 'wait');
+                var data_reboot = {"name":"reboot"},
+                myurl = "http://192.168.2.2:7557/devices/"+countlyCommon.ACTIVE_DEV+"/tasks?timeout=3000&connection_request";
+                ret=$.ajax({
+                    type:"POST",
+                    url:myurl,
+                    data: JSON.stringify(data_reboot),
                     success:function (result) {
-
-                        if (!result) {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
-                            return false;
-                        } else {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
-                        }
+                        alert("success");
+                        self.refresh();
+                         $("#overylay").hide();
+                         countlyCommon.maskDashboard = 0;
+                         $('body').css('cursor', 'auto');
+                    },
+                    error:function (result) {
+                        CountlyHelpers.alert(jQuery.i18n.map["management-applications.reboot-err"], "red");
+                         $("#overylay").hide();          
+                         countlyCommon.maskDashboard = 0;   
+                         $('body').css('cursor', 'auto');        
                     }
+                   
                 });
+                
             });
         });
 
@@ -2698,28 +2761,7 @@ window.DeviceMgrView = countlyView.extend({
                     return true;
                 }
 
-                var appId = $("#app-edit-id").val();
-
-                $.ajax({
-                    type:"GET",
-                    url:countlyCommon.API_PARTS.apps.w + '/reset',
-                    data:{
-                        args:JSON.stringify({
-                            app_id:appId
-                        }),
-                        api_key:countlyGlobal['member'].api_key
-                    },
-                    dataType:"jsonp",
-                    success:function (result) {
-
-                        if (!result) {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
-                            return false;
-                        } else {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
-                        }
-                    }
-                });
+                countlyDevmgr.reset(countlyCommon.ACTIVE_DEV);
             });
         });
 
@@ -2733,45 +2775,45 @@ window.DeviceMgrView = countlyView.extend({
                 if (!result) {
                     return true;
                 }
+                if(countlyCommon.ACTIVE_DEV != 0){
+                  var _dev = getCurrentDevice(countlyDevmgr.ACTIVE_DEV);
+                  countlyDevmgr.updateFireware(countlyCommon.ACTIVE_DEV, _dev[0].fireware_ver, countlyDevmgr.getFirewareLatestVer());
+                }
 
-                var appId = $("#app-edit-id").val();
-
-                $.ajax({
-                    type:"GET",
-                    url:countlyCommon.API_PARTS.apps.w + '/reset',
-                    data:{
-                        args:JSON.stringify({
-                            app_id:appId
-                        }),
-                        api_key:countlyGlobal['member'].api_key
-                    },
-                    dataType:"jsonp",
-                    success:function (result) {
-
-                        if (!result) {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-admin"], "red");
-                            return false;
-                        } else {
-                            CountlyHelpers.alert(jQuery.i18n.map["management-applications.clear-success"], "black");
-                        }
-                    }
-                });
             });
         });
 
+        $("#config-cancel-btn").click(function(){
+           //$("#hotspot-name-input").val("");
+           //$("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+           //$("#channel-add-category").data("value", "");
+           //$("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+           //$("#mode-add-category").data("value", "");    
+        
+            var _dev = countlyDevmgr.getCurrentDevice();
+            var _string ="";
+            if( _dev != null){
+                $("#hotspot-name-input").val(_dev[0].hotspot_info);
+
+                $("#channel-add-category").text(_string.concat("channel ",_dev[0].channel));
+                $("#channel-add-category").data("value", _dev[0].channel);
+                $("#mode-add-category").text(_string.concat("802.1 ", _dev[0].wifimode));
+                $("#mode-add-category").data("value", _dev[0].wifimode);   
+            }
+        });
+
         $("#config-apply-btn").click(function(){
-            console.log("click the apply");
 
             $(".required").fadeOut().remove();
             var reqSpan = $("<span>").addClass("required").text("*");
-            var modeName = $("#mode-add-category").data("value");  
-            var hotspotName = $("#hotspot-name-input").val();
+            var wifimode = $("#mode-add-category").data("value");  
+            var hotspotssid = $("#hotspot-name-input").val();
             var channelName = $("#channel-add-category").data("value"); 
 
-            if (!hotspotName) {
+            if (!hotspotssid) {
                 $("#hotspot-name-input").after(reqSpan.clone());
             }
-            if (!modeName) {
+            if (!wifimode) {
                 $("#mode-add-category").parents(".cly-select").after(reqSpan.clone());
             }
             if (!channelName) {
@@ -2783,17 +2825,8 @@ window.DeviceMgrView = countlyView.extend({
                 return false;
             }
 
-        });
+            countlyDevmgr.updateDevice(countlyCommon.ACTIVE_DEV,hotspotssid,wifimode,channelName);
 
-        $("#config-cancel-btn").click(function(){
-        $("#hotspot-name-input").val("");
-        $("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
-        $("#channel-add-category").data("value", "");
-        $("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
-        $("#mode-add-category").data("value", "");    
-        
-
-            console.log("enter cancel!");
         });
 
         $("#add-dev-button").click(function () {
@@ -2826,21 +2859,39 @@ window.DeviceMgrView = countlyView.extend({
     }, /* refresh the view */
     renderCommon:function () {
         /* render the view */   
-        var _devices = countlyDevmgr.getDevicesBySubnet(app.activeAppName); 
+        var _devices = countlyDevmgr.getDevicesBySubnet(countlyCommon.ACTIVE_APP_ID).devices; 
+        var _hotspot_params = [];
+        var _hotspot_data = {};
         var _currentDev = countlyDevmgr.getCurrentDevice();
-        console.log(_currentDev[0]["serial_no"]);
+        var _string ="";
+
+        if(_.size(_currentDev) != 0){
+            _hotspot_data.mode = _string.concat("802.1 ", _currentDev[0].wifimode);
+            _hotspot_data.channel = _string.concat("channel ",_currentDev[0].channel);
+            _hotspot_data.hotspot_info = _currentDev[0].hotspot_info;
+            _hotspot_params[0] = _hotspot_data;
+            console.log(_hotspot_params );
+        }else{
+            if(_.size(_devices) != 0){
+                countlyCommon.setActiveDev(_devices[0]["serial_no"]); 
+            }
+        }
+
+        console.log(_hotspot_params );
         $(this.el).html(this.template({
             events:countlyEvent.getEventsWithSegmentations(),
             app_name:app.activeAppName,
             exports:[],
             fireware_event:"  ",
-            devicesItem:_devices ,
-            currentDev:_currentDev
+            devicesItem:_devices,
+            currentDev:_currentDev,
+            hotspotParams:_hotspot_params
         }));
         
+        // after add firmeware version, enable it 
+        console.log(countlyDevmgr.isFirewareUpdate( _currentDev[0].fireware_ver, countlyDevmgr.getFirewareLatestVer() ) );
 
-        console.log(countlyDevmgr.isFirewareUpdate(_currentDev[0]["serial_no"]));
-        if( countlyDevmgr.isFirewareUpdate(_currentDev[0]["serial_no"])){
+        if( countlyDevmgr.isFirewareUpdate(_currentDev[0].fireware_ver, countlyDevmgr.getFirewareLatestVer() )){
           $("#config-reset-btn").removeClass("disabled");
           $("#badge_fireware_msg").css("background-color","#b94a48");  
           $("#badge_fireware_msg").text("update");  
@@ -2850,12 +2901,10 @@ window.DeviceMgrView = countlyView.extend({
         }
 
        $("#dev-management-bar .dev-container").removeClass("active");
-       $("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
-       $("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+       //$("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
+       //$("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
 
         if(_.size(_devices) > 0){
-            if(countlyCommon.ACTIVE_DEV == 0)
-                 countlyCommon.setActiveDev(_devices[0]["serial_no"]);
             $("#dev-management-bar .dev-container").removeClass("active");
             $("#dev-management-bar .dev-container[data-id='" + countlyCommon.ACTIVE_DEV + "']").addClass("active");        
         }
@@ -2874,10 +2923,32 @@ window.DeviceMgrView = countlyView.extend({
               // And this will get you it's name
             }
         });	   
+
+        /* device not fcous on specfic network */
+        if( countlyCommon.ACTIVE_APP_ID != _currentDev[0].subnetId ){
+            console.log("subnet and device is not same");
+            //$("#devicecfg_tabs").addClass("disabled");
+            //$("#devicecfg_tab1").addClass("disabled");
+            //$("#devicecfg_tab2").addClass("disabled");
+            //$("#devicecfg_tab3").addClass("disabled");
+            //$(".devicecfg_tabs" ).tabs("disable");
+            $( "#devicecfg_tabs" ).tabs( { disabled: [0,1, 2] } );
+            //$("#devicecfg_tabs").
+            
+        }else{
+            console.log("subnet and device is same");
+            //$("#devicecfg_tabs").removeClass("disabled");             
+            //$("#devicecfg_tab1").removeClass("disabled");
+            //$("#devicecfg_tab2").removeClass("disabled");
+            //$("#devicecfg_tab3").removeClass("disabled");  
+            //$( "#devicecfg_tabs" ).tabs( { enable: [0,1, 2] } );           
+        }
+
     }, /* refere the view if the subnetwork change */
     appChanged:function () {
        /*this.renderCommon();*/
        this.render();
+       //$( "#devicecfg_tabs" ).tabs( { disabled: [0,1, 2] } );
     }
 });
 
@@ -2899,7 +2970,8 @@ window.ManageTempView = countlyView.extend({
             apps:countlyGlobal['apps']
         }));
 */
-        var templates = countlyDevmgr.getTemplateByUser("test");
+        var templates = countlyDevmgr.getTemplateByUser("test");    
+        console.log(templates);    
         console.log(_.size(templates));
         $.ajax({
             url:countlyCommon.API_PARTS.users.r + '/all',
@@ -2912,8 +2984,9 @@ window.ManageTempView = countlyView.extend({
                 $('#content').html(self.template({
                     users:users,
                     apps:countlyGlobal['apps'],
-                    temp_items:templates["templates"],
-                    temps_num:_.size(templates["templates"]),
+                    //temp_items:templates[0].templates,
+                    temp_items:templates,
+                    temps_num:_.size(templates),
                     temp_params:templates["params"]
                 }));
             }
@@ -3092,6 +3165,44 @@ var AppRouter = Backbone.Router.extend({
         Handlebars.registerPartial("template-condition-box", $("#template-condition-categories").html());
         Handlebars.registerPartial("template-compare-box", $("#template-compare-categories").html());
 
+        Handlebars.registerHelper('wifimode_text' , function(context, options){
+            var ret = "";
+            if( 1 == context ){
+                ret = "802.11 b";
+            }else if( 2 == context ){
+                ret = "802.11 g";
+            } else if( 3 == context )
+            {
+                ret = "802.11 n";
+            }else if( 4 == context){
+                ret = "802.11 b/g/n";
+            }
+            return ret;
+        });
+
+        Handlebars.registerHelper('isCounterOdd' , function(context, options){ 
+            var _string = ";";
+
+            if( countlyCommon.temp_counts % 2 )
+                _string = _string.concat("background:white;");
+            console.log("isCounterOdd");
+            console.log(_string);
+            return _string;
+        });
+
+        Handlebars.registerHelper('counterInc' , function(context, options){ 
+            countlyCommon.temp_counts += 1;
+            return "" ;
+        });
+
+
+        Handlebars.registerHelper('channel_text' , function(context, options){ 
+            var _string ="";
+
+            _string = _string.concat("channel " , context);
+            return _string;
+        });
+
         Handlebars.registerHelper('eachOfObject', function (context, options) {
             var ret = "";
             for (var prop in context) {
@@ -3106,6 +3217,7 @@ var AppRouter = Backbone.Router.extend({
             }
             return ret;
         });
+
         Handlebars.registerHelper('eachOfArray', function (context, options) {
             var ret = "";
             for (var i = 0; i < context.length; i++) {
@@ -3284,8 +3396,7 @@ var AppRouter = Backbone.Router.extend({
 
 
             });
-
-
+            
         $(".dev-container:not(#app-container-new)").live("click", function () {
              $(".dev-container").removeClass("active");
              $(this).addClass("active");

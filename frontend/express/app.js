@@ -135,7 +135,8 @@ app.get('/dashboard', function (req, res, next) {
                     countlyDb.collection('apps').find({}).toArray(function (err, apps) {
                         adminOfApps = apps;
                         userOfApps = apps;
-
+			console.log("dump the apps:===>");
+			console.log(apps);
                         for (var i = 0; i < apps.length; i++) {
                             countlyGlobalApps[apps[i]["_id"]] = {
                                 "_id":"" + apps[i]["_id"],
@@ -143,7 +144,9 @@ app.get('/dashboard', function (req, res, next) {
                                 "key":apps[i]["key"],
                                 "category":apps[i]["category"],
                                 "timezone":apps[i]["timezone"],
-                                "country":apps[i]["country"]
+                                "country":apps[i]["country"],
+                                "lng":apps[i]["lng"],
+                                "lat":apps[i]["lat"]
                             };
                         }
 
@@ -183,7 +186,9 @@ app.get('/dashboard', function (req, res, next) {
                                 "key":admin_of[i]["key"],
                                 "category":admin_of[i]["category"],
                                 "timezone":admin_of[i]["timezone"],
-                                "country":admin_of[i]["country"]
+                                "country":admin_of[i]["country"],
+                                "lng":admin_of[i]["lng"],
+                                "lat":admin_of[i]["lat"]
                             };
                         }
 
@@ -198,7 +203,9 @@ app.get('/dashboard', function (req, res, next) {
                                     "key":user_of[i]["key"],
                                     "category":user_of[i]["category"],
                                     "timezone":user_of[i]["timezone"],
-                                    "country":user_of[i]["country"]
+                                    "country":user_of[i]["country"],
+                                    "lng":user_of[i]["lng"],
+                                    "lat":user_of[i]["lat"]
                                 };
                             }
 

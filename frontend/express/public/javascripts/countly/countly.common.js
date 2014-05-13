@@ -13,7 +13,9 @@
     countlyCommon.periodObj = getPeriodObj();
     countlyCommon.localSearch = null;
     countlyCommon.localMapDev = null;
-    countlyCommon.localSubnetMap =null;  
+    countlyCommon.localSubnetMap =null; 
+    countlyCommon.maskDashboard = 0; 
+    countlyCommon.temp_counts = 0;
     /*
      * there are two maps in design , one for devmgr, and one for subnetwork, 
      * for subnetwork, it can share the map but with the different parameters 
