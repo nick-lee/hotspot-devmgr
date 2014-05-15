@@ -247,6 +247,27 @@
         else
             return true;
     }
+
+    /**
+     * DESCR : create template information by user
+     * INPUT : userId - user id 
+     *         options - collection of parameters, refer  options defintion in function.
+     * OUTPUT : 
+     */
+    countlyDevmgr.createTemplateByUser = function(userId, options)
+    {
+        /*
+        var options  = {
+            templates:[
+                        {id:1,condition_temp:"序列号",judgement:"=",input:"00:20:60:00:00:23"},
+                        {id:2,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"},
+                        {id:3,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"}
+                        ],
+             params:{wifimode:1,channel:2,ssid:"天府热点"}
+         };
+         */
+         return;
+    }
     /**
      * DESCR : get template information by user
      * INPUT : userId - user id 
@@ -254,19 +275,6 @@
      */
     countlyDevmgr.getTemplateByUser = function(userId)
     {
-
-       var temps = {templates:[
-                        {id:1,condition_temp:"serial number",judgement:"=",input:"00:20:60:00:00:23"},
-                        {id:2,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"},
-                        {id:3,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"}],
-                        params:{wifimode:1,channel:2,ssid:"天府热点"},
-                    };
-
-       var temp_info = [{id:1,condition_temp:"serial number",judgement:"=",input:"00:20:60:00:00:23"},
-                        {id:2,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"},
-                        {id:3,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"}
-                       ];
-
         var temp_items = [
             {templates:[
                         {id:1,condition_temp:"序列号",judgement:"=",input:"00:20:60:00:00:23"},
@@ -292,8 +300,8 @@
 
         ];               
 
-        console.log(temps["templates"]);
-        console.log(temps["params"]);
+        //console.log(temps["templates"]);
+        //console.log(temps["params"]);
         var temp=[];
         return temp_items;        
     };

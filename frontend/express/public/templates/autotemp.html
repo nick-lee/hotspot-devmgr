@@ -107,57 +107,57 @@
 						<div class="detail">						
                             <div class="cly-select" style="width:220px;">
 			                   <div class="select-inner">
-			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip">{{this.condition_temp}}</div>
-			                   	</div>
-			                   	<div class="right combo"></div>
+			                   	  <div class="text-container">
+			                   	  	<div class="text" id="channel-add-category" data-localize="manaapplications.  category.tip">{{this.condition_temp}}
+			                   	  	</div>
+			                   	  </div>
+			                   	  <div class="right combo">			                   		
+			                   	  </div>
 			                   </div>
 			                   <div class="select-items square" style="width:220px;">
-			                   	<div class="scrollable">
-			                   		{{> template-condition-box }}
-			                   	</div>
+			                    	<div class="scrollable">
+			                    		{{> template-condition-box }}
+			                    	</div>
 			                   </div>
-                             </div>   	   
+                            </div>   	   
 
                             <div class="cly-select" style="width:120px;">
-			                   <div class="select-inner">
-			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip">{{this.judgement}}</div>
-			                   	</div>
-			                   	<div class="right combo"></div>
-			                   </div>
-			                   <div class="select-items square" style="width:120px;">
-			                   	<div class="scrollable">
-			                   		{{> template-compare-box }}
-			                   	</div>
-			                   </div>
-                             </div>   	     
+			                    <div class="select-inner">
+			                    	    <div class="text-container">
+			                    	    	<div class="text" id="channel-add-category" data-localize="manaapplications. category.tip">{{this.judgement}}
+			                    	    	</div>
+			                    	    </div>
+			                    	<div class="right combo">			                   		
+			                    	</div>
+			                    </div>
+			                    <div class="select-items square" style="width:120px;">
+			                    	  <div class="scrollable">
+			                    	  	{{> template-compare-box }}
+			                    	  </div>
+			                    </div>
+                            </div>   	     
 
 						     <input class="email-text" type="text" value="{{this.input}}"/ style="position:relative;top:-7px;">
 														
 					      	<div class="select-temps" style="position:relative;top:4px;">
 					      	    <input type="hidden" value="" class="app-list"/>
 					      	</div>
-					      	
-				        	<div class="button-container">
-				        		<input class="user_id" type="hidden" value="{{this._id}}"/>
-				        		<a class="icon-button light save-user" data-localize="common.save"></a>
-				        		<a class="icon-button light cancel-user" data-localize="common.cancel"></a>				        					        		
-				        	</div>
-						
+
 						</div>
-						{{/with}}						
-					</div>		
-					{{/eachOfObjectValue}}			
+						{{/with}}		
+					      			
+					</div>
+	
+					{{/eachOfObjectValue}}	
+		
 					<div class="button-container">
-						<input class="user_id" type="hidden" value="{{this._id}}"/>
 						<a class="icon-button light save-user" data-localize="common.save"></a>
 						<a class="icon-button light cancel-user" data-localize="common.cancel"></a>
-						{{#unless this.is_current_user}}
 						<a class="icon-button red delete-user" data-localize="management-users.delete-user"></a>
-						{{/unless}}
 					</div>
 					{{counterInc temp_items}}
+					<div> aaaaaaaaaaaaaaaaaaa </div>
+					<div><a class="icon-button light cancel-user" data-localize="common.cancel"></a></div>
 				{{/eachOfObjectValue}}	
 				</div>
 			</td>

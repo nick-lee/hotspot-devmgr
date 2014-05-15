@@ -3185,8 +3185,6 @@ var AppRouter = Backbone.Router.extend({
 
             if( countlyCommon.temp_counts % 2 )
                 _string = _string.concat("background:white;");
-            console.log("isCounterOdd");
-            console.log(_string);
             return _string;
         });
 
