@@ -3,49 +3,34 @@
 <table id="user-table" cellspacing="0" class="d-table">
 	<thead>
 		<tr>
-			<th data-localize="management-users.full-name"></th>
-			<th data-localize="management-users.username"></th>
-			<th data-localize="management-users.role"></th>
-			<th data-localize="management-users.email"></th>
+			<th data-localize="management-applications.template.ID"></th>
+			<th data-localize="management-applications.template.name"></th>			
+			<th data-localize=" "></th>
+			<th data-localize=" "></th>			
 		</tr>
 	</thead>
 	<tbody>
-		{{#eachOfObjectValue users}}
+		{{#eachOfObjectValue temp_items}}
 		<tr>
-			<td class="user-full-name">{{this.full_name}}</td>
-			<td class="user-username">{{this.username}}</td>
-			<td class="user-role">
-				{{#if this.global_admin}}
-					<span data-localize="management-users.global-admin"></span>
-				{{else}}
-					{{#if this.admin_of}}
-						<span data-localize="management-users.admin"></span>
-					{{else}}
-						{{#if this.user_of}}
-							<span data-localize="management-users.user"></span>
-						{{else}}
-							<span data-localize="management-users.no-role"></span>
-						{{/if}}
-					{{/if}}
-				{{/if}}
-			</td>
-			<td>
+			<td class="user-full-name">{{this.id}}</td>
+			<td class="user-username">{{this.name}}</td>
+			<td class="user-full-name"></td>
+			<td class="user-username">
 				<div>
-					<span class="user-email">{{this.email}}</span>
+					<span class="user-email">操作</span>
 					<div class="help-edit" data-localize="management-users.edit"></div>
 					<div class="help-close" data-localize="management-users.close"></div>
-				</div>
-			</td>
+				</div>				
+			</td>			
 		</tr>
-	    {{/eachOfObjectValue}}
+	    
 
 		<tr class="user-details">			
 			<td colspan="4">
 				<div>
-				{{#eachOfObjectValue temp_items}}
-					
+
 					{{#with this.params}}					
-					<div class="row help-zone-vs " style="{{isCounterOdd temp_items}}" data-help-localize="sidebar.devicemgr.hotspot.config">
+					<div class="row help-zone-vs " style="background:white" data-help-localize="sidebar.devicemgr.hotspot.config">
 			
 
 						<div class="title" data-localize="sidebar.devicemgr.mode"></div>					
@@ -67,7 +52,7 @@
 						</div>						
 					</div>	
 
-					<div class="row help-zone-vs " style="{{isCounterOdd temp_items}}" data-help-localize="sidebar.devicemgr.hotspot.config">
+					<div class="row help-zone-vs " style="background:white" data-help-localize="sidebar.devicemgr.hotspot.config">
 
 						<div class="title" data-localize="sidebar.devicemgr.channel"></div>
 						    <div class="detail">
@@ -89,7 +74,7 @@
 						</div>
 					</div>			
 
-					<div class="row help-zone-vs " style="{{isCounterOdd temp_items}}" data-help-localize="sidebar.devicemgr.hotspot.config">
+					<div class="row help-zone-vs " style="background:white" data-help-localize="sidebar.devicemgr.hotspot.config">
 						<div class="title" data-localize="sidebar.devicemgr.SSID"></div>
 						<div class="detail">
 
@@ -99,11 +84,11 @@
 						    
 					{{/with }}
 					
-					{{#eachOfObjectValue this.templates}}	    
-					<div class="row help-zone-vs " style="{{isCounterOdd temp_items}}" data-help-localize="manage-users.full-name">
+					{{#eachOfObjectValue this.templates}}
+						 {{#with this}}   
+					<div class="row help-zone-vs " style="" data-help-localize="manage-users.full-name">
 						<div class="title" data-localize="management-applications.filter"></div>
-						
-						{{#with this}}
+						<div> {{this.id}}</div>
 						<div class="detail">						
                             <div class="cly-select" style="width:220px;">
 			                   <div class="select-inner">
@@ -142,26 +127,21 @@
 					      	<div class="select-temps" style="position:relative;top:4px;">
 					      	    <input type="hidden" value="" class="app-list"/>
 					      	</div>
-
 						</div>
-						{{/with}}		
 					      			
-					</div>
-	
-					{{/eachOfObjectValue}}	
-		
+					</div>					
+					{{/with}}
 					<div class="button-container">
 						<a class="icon-button light save-user" data-localize="common.save"></a>
 						<a class="icon-button light cancel-user" data-localize="common.cancel"></a>
-						<a class="icon-button red delete-user" data-localize="management-users.delete-user"></a>
+						<a class="icon-button red delete-user" data-localize="management-applications.template.delete"></a>
 					</div>
-					{{counterInc temp_items}}
-					<div> aaaaaaaaaaaaaaaaaaa </div>
-					<div><a class="icon-button light cancel-user" data-localize="common.cancel"></a></div>
+
 				{{/eachOfObjectValue}}	
 				</div>
 			</td>
 		</tr>
+		{{/eachOfObjectValue}}
 
 		<tr>
 			<td colspan="4">
@@ -170,8 +150,9 @@
 		</tr>
 		<tr class="user-details">
 			<td colspan="4">
-			<div id = "temp_container">	
+				<div id = "temp_container">	
 
+	
 					<div class="row help-zone-vs " style="background:white;" data-help-localize="sidebar.devicemgr.hotspot.config">
 						<div class="title" data-localize="sidebar.devicemgr.mode"></div>
 						<div class="detail">
@@ -179,7 +160,7 @@
                         <div class="cly-select" style="width:220px;">
 		          	    <div class="select-inner">
 		          	    	<div class="text-container">
-		          	    		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
+		          	    		<div class="text text_mode" id="channel-params-category" data-localize="manaapplications.category.tip"></div>
 		          	    	</div>
 		          	    	<div class="right combo"></div>
 		          	    </div>
@@ -189,9 +170,6 @@
 		          	    	</div>
 		          	    </div>
                         </div>   	          
-
-
-
 
 						</div>						
 					</div>	
@@ -203,7 +181,7 @@
                         <div class="cly-select" style="width:220px;">
 		          	    <div class="select-inner">
 		          	    	<div class="text-container">
-		          	    		<div class="text" id="mode-add-category" data-localize="manaapplications.category.tip"></div>
+		          	    		<div class="text text_channel" id="mode-params-category" data-localize="manaapplications.category.tip"></div>
 		          	    	</div>
 		          	    	<div class="right combo"></div>
 		          	    </div>
@@ -221,103 +199,61 @@
 						<div class="title" data-localize="sidebar.devicemgr.SSID"></div>
 						<div class="detail">
 
-           				<input class="username-text" id="hotspot-name-input" style="position:relative;margin-top:5px;margin-bottom:5px; width:100%;" type="text" value=""/><br/>
+           				<input class="username-text" id="ssid-params-input" style="position:relative;margin-top:5px;margin-bottom:5px; width:100%;" type="text" value=""/><br/>
 						</div>
 					</div>		
-		
+				    	
+					<div  id="filter_container" class="row help-zone-vs " style="" data-help-localize="manage-users.full-name">
 
-				{{#each temp_items}}
-				    
-					<div class="row help-zone-vs " data-help-localize="manage-users.full-name">
-						<div class="title" data-localize="management-applications.filter"></div>
-						<div class="detail">
-
-                            <div class="cly-select" style="width:220px;">
-			                   <div class="select-inner">
-			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
-			                   	</div>
-			                   	<div class="right combo"></div>
-			                   </div>
-			                   <div class="select-items square" style="width:220px;">
-			                   	<div class="scrollable">
-			                   		{{> mode-categories }}
-			                   	</div>
-			                   </div>
-                             </div>   	   
-
-                            <div class="cly-select" style="width:120px;">
-			                   <div class="select-inner">
-			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
-			                   	</div>
-			                   	<div class="right combo"></div>
-			                   </div>
-			                   <div class="select-items square" style="width:120px;">
-			                   	<div class="scrollable">
-			                   		{{> template-compare-box }}
-			                   	</div>
-			                   </div>
-                             </div>   	     
-
-						     <input class="email-text" type="text" value="{{this.input}}"/ style="position:relative;top:-7px;">
-
-													
-					      	<div class="{{#unless @last}}select-temps{{else}}select-temps-add{{/unless}}" style="position:relative;top:4px;">
-					      	    <input type="hidden" value="" class="app-list"/>
-					      	</div>
-					      	
+					</div>
+					<div  class="row help-zone-vs ">
 				        	<div class="button-container">
 				        		<input class="user_id" type="hidden" value="{{this._id}}"/>
-				        		<a class="icon-button light save-user" data-localize="common.save"></a>
-				        		<a class="icon-button light cancel-user" data-localize="common.cancel"></a>				        					        		
-				        	</div>
-
-						</div>
-					</div>		
-					
-				{{/each}}
-
-					<div id="new-temp-bar" class="row help-zone-vs " data-help-localize="manage-users.full-name" style="{{#unless temps_num}}{{else}}display:none{{/unless}}">
+				        		<a class="icon-button light save-template" data-localize="common.save"></a>
+				        		<a class="icon-button light cancel-template" data-localize="common.cancel"></a>				        					        		
+				        	</div>	
+					</div>
+					<div id="new-temp-bar" class="row help-zone-vs " data-help-localize="manage-users.full-name" style="display:none">
 						<div class="title" data-localize="management-applications.filter"></div>
-						<div class="detail">
+						<div class="detail">							
 
-                            <div class="cly-select" style="width:220px;">
+                            <div class="cly-select cly-select-auto" style="width:220px;">
 			                   <div class="select-inner">
 			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
+			                   		<div class="text text_condition" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
 			                   	</div>
 			                   	<div class="right combo"></div>
 			                   </div>
-			                   <div class="select-items square" style="width:220px;">
+			                   <div class="select-items square select-items-auto" style="width:220px;">
 			                   	<div class="scrollable">
 			                   		{{> mode-categories }}
 			                   	</div>
 			                   </div>
                              </div>   	   
 
-                            <div class="cly-select" style="width:120px;">
+                            <div class="cly-select cly-select-auto" style="width:120px;">
 			                   <div class="select-inner">
 			                   	<div class="text-container">
-			                   		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
+			                   		<div class="text text_judgement" id="channel-add-category" data-localize="manaapplications.category.tip"></div>
 			                   	</div>
 			                   	<div class="right combo"></div>
 			                   </div>
-			                   <div class="select-items square" style="width:120px;">
+			                   <div class="select-items square select-items-auto" style="width:120px;">
 			                   	<div class="scrollable">
 			                   		{{> template-compare-box }}
 			                   	</div>
 			                   </div>
                              </div>   	     
 
-						     <input class="email-text" type="text" value=""/ style="position:relative;top:-7px;">
-
+						     <input class="condition-text" type="text" value=""/ style="position:relative;top:-7px;">
 		
-					      	<div class="select-temps-add" style="position:relative;top:4px;display:none;">
+					      	<div class="select-temps-add" style="position:relative;top:4px;">
 					      	    <input type="hidden" value="" class="app-list"/>
 					      	</div>
+
+				        </div>				      	
 					</div>
-			</div>
+				</div>
 			</td>
 		</tr>
 	</tbody>
@@ -355,6 +291,10 @@ $(document).ready(function() {
 		lastUserSaved = false,
 		previousSelectAppPos = {},
 		currUsername = "",
+		new_temp_bar = null,
+		new_temp_data = [],
+		new_params = {},
+		user_templates = {},
 		currEmail = "";
 
 	
@@ -399,11 +339,13 @@ $(document).ready(function() {
 	}
 
     function initializeSelect() {
+
+    	$(".cly-select").unbind('click');
+    	$(".select-items .item").unbind('click');
+
         $(".cly-select").click(function (e) {
             var selectItems = $(this).find(".select-items");
-
-            console.log("click the select ");
-            
+         
             if (!selectItems.length) {
                 return false;
             }
@@ -429,6 +371,18 @@ $(document).ready(function() {
         });
     }
 
+	function closeActiveEditAuto() {
+		if (previousUserDetails) {
+			previousUserDetails.replaceWith(userDetailsClone);
+			previousUserDetails = null;
+		}
+		
+		$(".user-details").hide();
+		$("#user-table").find("tbody tr.active").removeClass("active");
+		$("#user-table").find("tbody tr:not(.user-details)").css({"opacity": "1"});
+		$("#listof-apps").hide();
+	}
+
 	function closeActiveEdit() {
 		if (previousUserDetails) {
 			previousUserDetails.replaceWith(userDetailsClone);
@@ -441,15 +395,123 @@ $(document).ready(function() {
 		$("#listof-apps").hide();
 	}
 	
+	function addCancelTemplateClick(){
+		if(_.size(new_temp_data) != 0){
+			console.log("new_temp_data size = " + _.size(new_temp_data));
+		}
+		closeActiveEdit();
+		//new_temp_bar = null;
+	}
+
+	function clearNewBarData()
+	{
+		console.log("clear new bar data");
+		$("#filter_container").empty();
+		new_temp_data = [];
+		new_temp_bar = null;
+		new_params = {};
+		user_templates = {};
+	}
+
+	function addSaveTemplateClick(){
+		$(".email-check.green-text").remove();
+		$(".username-check.green-text").remove();
+		var data = {};
+		var user_name = $('#menu-username').text();
+
+		console.log("get value : ");
+		var values = {};
+		$("div#create_temp_details *").each( function(i){
+			console.log(jQuery(this).val());
+			if($(this).hasClass("condition-text")){
+				//console.log($(this).val());
+			}
+		})
+
+		var input_text = new_temp_bar.find(".condition-text").val();
+		console.log("input_text " + input_text);		
+
+    	console.log("save template!");
+	}
+
+	function addnewbarClick(){
+		   console.log("trigger addnewbarClick");
+		   var __temp = {};	
+
+		   if(($("#channel-params-category").text()=="") || 
+			 ($("#mode-params-category").text() == "") ||
+			 ($("#ssid-params-input").val()=="") )
+		   {
+   
+		   	console.log("params empty");
+		   	return;
+		   }
+   
+		   if( new_temp_bar != null){
+		    new_temp_bar.find("*").each(function(i){
+		    	if($(this).hasClass("condition-text")){
+		    		console.log($(this).val());
+		    		__temp.input = $(this).val();
+		    	}
+		    	if( $(this).hasClass("text_condition") ){
+		    		console.log($(this).data("value"));
+		    		console.log($(this).text());
+		    		__temp.condition_temp = $(this).text();
+		    	}
+		    	if( $(this).hasClass("text_judgement") ){
+		    		console.log($(this).text());
+		    		console.log($(this).data("value"));
+		    		__temp.judgement = $(this).text();
+		    	}		    	
+		    })		   
+		   }
+
+		   if( (__temp.input =="") || (__temp.condition_temp == "") || (__temp.judgement == "") ){
+		     	console.log("data empty" + __temp);
+		     	return;
+		   }else{
+		   		 new_temp_data.push(__temp);
+		   }   
+
+		   new_temp_bar = $("#new-temp-bar>div").clone();
+		   $(this).parent().parent().append(new_temp_bar);
+		   $(new_temp_bar).find("*").each(function(i){
+		    	if($(this).hasClass("select-temps-add")){
+		    		console.log("register event!");
+		    		$(this).bind("click",addnewbarClick);
+		    	}    	   
+		   });		   
+		   initializeSelect();		   
+	}
+
 	$("#user-table").find("tbody tr").not(".user-details").on('click', function() {
-		
 		if (!lastUserSaved && previousUserDetails) {
 			previousUserDetails.replaceWith(userDetailsClone);
 			previousUserDetails = null;
 		}
-				
+
+		clearNewBarData();
+		if( new_temp_bar == null){
+			new_temp_bar = $("#new-temp-bar>div").clone();
+			$("#filter_container").append(new_temp_bar);	
+		    new_temp_bar.find("*").each(function(i){
+		    	if($(this).hasClass("select-temps-add")){
+		    		console.log("register event!");
+		    		$(this).bind("click",addnewbarClick);
+		    	} 
+		    	if($(this).hasClass("cancel-template")){
+		    		console.log("register the cancel event");
+		    		$(this).bind("click",addCancelTemplateClick);
+		    	}
+		    	if($(this).hasClass("save-template")){
+		    		console.log("register the cancel event");
+		    		$(this).bind("click",addSaveTemplateClick);
+		    	}
+		    });
+		}
+
 		lastUserSaved = false;
-		userDetailsClone = $(this).next(".user-details").clone(true);		
+		userDetailsClone = $(this).next(".user-details").clone(true);	
 		$("#listof-apps").hide();
 		if ($(this).hasClass("active")) {
 			closeActiveEdit();
@@ -465,6 +527,7 @@ $(document).ready(function() {
 			currUsername = currUserDetails.find(".username-text").val();
 			currEmail = currUserDetails.find(".email-text").val();
 		}
+		initializeSelect();
 	});
 	
 	
@@ -476,17 +539,67 @@ $(document).ready(function() {
 		console.log("click template select-temp !");
 	});
 
+/*
 	$(".select-temps-add").on('click',function(){
-		//$("#new-temp-bar").show();		
-		//$(this).removeClass("select-temps-add");
-		//$(this).addClass("select-temps");
-		//console.log("click template select-temps-add!");
-		//$("#new-temp-bar").show();	
+		var __temp = {};		
 
-		var temp_bar = $("#new-temp-bar>div").clone();
-		$(this).parent().parent().append(temp_bar);
+		if( new_temp_bar != null){
+		    new_temp_bar.find("*").each(function(i){
+		    	if($(this).hasClass("condition-text")){
+		    		console.log($(this).val());
+		    		__temp.input = $(this).val();
+		    	}
+		    	if( $(this).hasClass("text_condition") ){
+		    		console.log($(this).data("value"));
+		    		console.log($(this).text());
+		    		__temp.condition_temp = $(this).text();
+		    	}
+		    	if( $(this).hasClass("text_judgement") ){
+		    		console.log($(this).text());
+		    		console.log($(this).data("value"));
+		    		__temp.judgement = $(this).text();
+		    	}		    	
+		    })
+		}else{
+		    $("#first_temps_bar").find("*").each(function(i){
+		    	if($(this).hasClass("condition-text")){
+		    		console.log($(this).val());
+		    		__temp.input = $(this).val();
+		    	}
+		    	if( $(this).hasClass("text_condition") ){
+		    		console.log($(this).data("value"));
+		    		console.log($(this).text());
+		    		__temp.condition_temp = $(this).text();
+		    	}
+		    	if( $(this).hasClass("text_judgement") ){
+		    		console.log($(this).text());
+		    		console.log($(this).data("value"));
+		    		__temp.judgement = $(this).text();
+		    	}		    	
+		    })
+		}	
+		
+		if ( ($("#channel-params-category").text()=="") || 
+			 ($("#mode-params-category").text() == "") ||
+			 ($("#ssid-params-input").val()=="") ){
 
+			console.log("params empty");
+			return;
+		}
+
+		if( (__temp.input =="") || (__temp.condition_temp == "") || (__temp.judgement == "") ){
+		  	console.log("data empty" + __temp);
+		  	return;
+		}
+
+		new_temp_data.push(__temp);
+		new_temp_bar = $("#new-temp-bar>div").clone();
+		$(this).parent().parent().append(new_temp_bar);
+		initializeSelect();
+		console.log("new_temp_data = " + new_temp_data);
 	});
+
+*/
 
 	$(".select-apps").on('click', function() {
 		$("#listof-apps .app").removeClass("selected");
@@ -746,10 +859,124 @@ $(document).ready(function() {
 			}
 		});
 	}, 300));
-	
+
+    $(".save-template").on("click",function() {
+		$(".email-check.green-text").remove();
+		$(".username-check.green-text").remove();
+		var data = {};
+		var __temp = {};
+		var user_name = $('#menu-username').text();
+		var data_ok = 1;
+		var input_text , condition_text, judgement_text,wifimode_text,channel_text,ssid_text;
+
+		$(".required").fadeOut().remove();
+		var reqSpan = $("<span>").addClass("required").text("*");
+		if ( ($("#channel-params-category").text()=="") || 
+			($("#mode-params-category").text() == "") ||
+			($("#ssid-params-input").val()=="") )
+		{   	 		
+			wifimode_text = $("#mode-params-category").data("value");
+			channel_text = $("#channel-params-category").data("value");
+			ssid_text = $("#ssid-params-input").val();
+
+			if(!ssid_text){
+				 $("#ssid-params-input").after(reqSpan.clone());
+			}
+
+			if(!channel_text){
+				$("#channel-params-category").parents(".cly-select").after(reqSpan.clone());
+			}
+
+			if(!wifimode_text){
+				$("#mode-params-category").parents(".cly-select").after(reqSpan.clone());
+            }
+
+		 	data_ok = 0;
+		 }
+
+		 var input_empty;
+		if( new_temp_bar != null){
+		 new_temp_bar.find("*").each(function(i){
+		 	if($(this).hasClass("condition-text")){
+		 		console.log($(this).val());
+		 		__temp.input = $(this).val();
+		 		input_text = $(this).val();
+		 		input_empty = $(this);
+		 	}
+		 	if( $(this).hasClass("text_condition") ){
+		 		console.log($(this).data("value"));
+		 		console.log($(this).text());
+		 		__temp.condition_temp = $(this).text();
+		 		condition_text = $(this).data("value");
+		 	}
+		 	if( $(this).hasClass("text_judgement") ){
+		 		console.log($(this).text());
+		 		console.log($(this).data("value"));
+		 		__temp.judgement = $(this).text();
+		 		judgement_text = $(this).data("value");
+		 	}		    	
+		 })
+		}
+
+		if( (__temp.input =="") || (__temp.condition_temp == "") || (__temp.judgement == "") ){	  	
+		  	data_ok = 0;
+		  	input_empty.after(reqSpan.clone());
+		}
+        if ($(".required").length) {
+            $(".required").fadeIn();
+            return false;
+        }
+
+
+		if (data_ok) {
+	    	new_params.wifimode = $("#mode-params-category").text();
+	    	new_params.channel = $("#channel-params-category").text();
+	    	new_params.ssid = $("#ssid-params-input").val();		    			
+			new_temp_data.push(__temp);
+
+		    user_templates.user = user_name;
+		    user_templates.templates = new_temp_data;
+		    user_templates.params = new_params;
+   
+		    countlyDevmgr.createTemplateByUser(user_templates);
+		    //clearNewBarData();
+		    //closeActiveEdit();	
+			//saveUser();
+			app.activeView.render();
+		} else {			
+			return;
+		}
+
+
+		function saveUser() {
+			$.ajax({
+				type: "GET",
+                url: countlyCommon.API_PARTS.users.w + '/update',
+                data: {
+                    args: JSON.stringify(data),
+                    api_key: countlyGlobal['member'].api_key
+                },
+                dataType: "jsonp",
+				success: function(result) {
+					if (currUserDetails.find(".delete-user").length == 0) {
+						$("#menu-username").text(data.username);
+					}
+					app.activeView.render();
+				}
+			});
+		}			 
+
+    });
+
 	$(".cancel-user").on("click", function() {
 		closeActiveEdit();
 	});
+
+	$(".cancel-template").on("click", function() {
+		//console.log("new_temp_data after = " + new_temp_data);
+		clearNewBarData();
+		closeActiveEdit();
+	});	
 
 	$(".delete-user").on("click", function() {
 		var currUserDetails = $(".user-details:visible");

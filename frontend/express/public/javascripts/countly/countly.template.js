@@ -159,8 +159,6 @@ $.extend(Template.prototype, {
         $(".cly-select").click(function (e) {
             var selectItems = $(this).find(".select-items");
 
-            console.log("click the select ");
-
             if (!selectItems.length) {
                 return false;
             }
@@ -2971,8 +2969,8 @@ window.ManageTempView = countlyView.extend({
         }));
 */
         var templates = countlyDevmgr.getTemplateByUser("test");    
-        console.log(templates);    
-        console.log(_.size(templates));
+        var templates_name = countlyDevmgr.getTemplateByUserEx("user"); 
+        var user_name = $('#menu-username').text();
         $.ajax({
             url:countlyCommon.API_PARTS.users.r + '/all',
             data:{
@@ -2982,10 +2980,9 @@ window.ManageTempView = countlyView.extend({
             success:function (users) {
                // var templates = countlyDevmgr.getTemplateByUser("test");
                 $('#content').html(self.template({
-                    users:users,
+                    temp_items:templates_name,
+                    user:user_name,
                     apps:countlyGlobal['apps'],
-                    //temp_items:templates[0].templates,
-                    temp_items:templates,
                     temps_num:_.size(templates),
                     temp_params:templates["params"]
                 }));
@@ -3193,7 +3190,9 @@ var AppRouter = Backbone.Router.extend({
             return "" ;
         });
 
-
+        Handlebars.registerHelper('getCounter' , function(context, options){ 
+            return countlyCommon.temp_counts ;
+        });
         Handlebars.registerHelper('channel_text' , function(context, options){ 
             var _string ="";
 

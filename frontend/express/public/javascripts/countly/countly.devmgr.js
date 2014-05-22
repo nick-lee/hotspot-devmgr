@@ -268,6 +268,54 @@
          */
          return;
     }
+
+    countlyDevmgr.getTemplateByUserEx = function(userId)
+    {
+        var templates = [ 
+            {id:1,name:"天府软件园模板一"},
+            {id:2,name:"天府软件园模板A区"},
+            {id:3,name:"天府软件园模板B区"},
+            {id:4,name:"天府软件园模板C区"}
+        ];
+
+        var temp_items = [
+            {   
+                name:"天府软件园模板一",
+                id:1,
+                templates:[
+                        {id:1,condition_temp:"序列号",judgement:"=",input:"00:20:60:00:00:23"},
+                        {id:2,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"},
+                        {id:3,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"}
+                        ],
+                params:{wifimode:1,channel:2,ssid:"天府热点"}
+            },
+            {
+                name:"天府软件园模板2",
+                id:2,                
+                 templates:[
+                        {id:1,condition_temp:"MAC地址",judgement:"=",input:"00:20:60:00:00:24"},
+                        {id:2,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"},
+                        {id:3,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"}
+                        ],
+                params:{wifimode:1,channel:2,ssid:"高克斯热点"}
+            },            
+            {
+                name:"天府软件园模板3",
+                id:3,  
+                templates:[
+                        {id:1,condition_temp:"序列号",judgement:"=",input:"00:20:60:00:00:24"},
+                        {id:2,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"},
+                        {id:3,condition_temp:"subnetwork id",judgement:"=",input:"534ba01a9d6005b305000009"}
+                        ],
+                params:{wifimode:1,channel:2,ssid:"高克斯热点"}
+            }            
+
+        ];    
+        return temp_items;
+
+    }
+
+
     /**
      * DESCR : get template information by user
      * INPUT : userId - user id 
