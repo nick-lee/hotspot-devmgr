@@ -934,11 +934,10 @@ $(document).ready(function() {
 	    	new_params.ssid = $("#ssid-params-input").val();		    			
 			new_temp_data.push(__temp);
 
-		    user_templates.user = user_name;
 		    user_templates.templates = new_temp_data;
 		    user_templates.params = new_params;
    
-		    countlyDevmgr.createTemplateByUser(user_templates);
+		    countlyDevmgr.createTemplateByUser(user_name,user_templates);
 		    //clearNewBarData();
 		    //closeActiveEdit();	
 			//saveUser();

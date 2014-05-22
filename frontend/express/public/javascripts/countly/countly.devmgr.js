@@ -1,95 +1,7 @@
 (function (countlyDevmgr, $, undefined) {
 
     // Private Properties
-    var _periodObj = {},
-        _devicesDb = {},        
-        _activeAppKey = 0,
-        _countries = [],
-        _chart,
-        _dataTable,
-        _chartElementId = "geo-chart",
-        _chartOptions = {
-            displayMode:'region',
-            colorAxis:{minValue:0, colors:['#D7F1D8', '#6BB96E']},
-            resolution:'countries',
-            toolTip:{textStyle:{color:'#FF0000'}, showColorCode:false},
-            legend:"none",
-            backgroundColor:"transparent",
-            datalessRegionColor:"#FFF"
-        },
-        _countryMap = {},
-        _initialized = false;
 
-    // Public Methods
-    countlyDevmgr.initialize = function () {
-        if (_initialized && _activeAppKey == countlyCommon.ACTIVE_APP_KEY) {
-            return countlyDevmgr.refresh();
-        }
-
-        // Load local country names
-        $.get('/localization/countries/' + countlyCommon.BROWSER_LANG_SHORT + '/country.json', function (data) {
-            _countryMap = data;
-        });
-
-        if (!countlyCommon.DEBUG) {
-            _activeAppKey = countlyCommon.ACTIVE_APP_KEY;
-            _initialized = true;
-
-            return $.ajax({
-                type:"GET",
-                url:countlyCommon.API_PARTS.data.r,
-                data:{
-                    "api_key":countlyGlobal.member.api_key,
-                    "app_id":countlyCommon.ACTIVE_APP_ID,
-                    "method":"locations"
-                },
-                dataType:"jsonp",
-                success:function (json) {
-                    _devicesDb = json;
-                    setMeta();
-                }
-            });
-        } else {
-            _devicesDb = {"2012":{}};
-            return true;
-        }
-    };
-
-    countlyDevmgr.refresh = function () {
-        _periodObj = countlyCommon.periodObj;
-
-        if (!countlyCommon.DEBUG) {
-
-            if (_activeAppKey != countlyCommon.ACTIVE_APP_KEY) {
-                _activeAppKey = countlyCommon.ACTIVE_APP_KEY;
-                return countlyDevmgr.initialize();
-            }
-
-            return $.ajax({
-                type:"GET",
-                url:countlyCommon.API_PARTS.data.r,
-                data:{
-                    "api_key":countlyGlobal.member.api_key,
-                    "app_id":countlyCommon.ACTIVE_APP_ID,
-                    "method":"locations",
-                    "action":"refresh"
-                },
-                dataType:"jsonp",
-                success:function (json) {
-                    countlyCommon.extendDbObj(_devicesDb, json);
-                    setMeta();
-                }
-            });
-        } else {
-            _devicesDb = {"2012":{}};
-            return true;
-        }
-    };
-
-    countlyDevmgr.reset_mgr = function () {
-        _devicesDb = {};
-        setMeta();
-    };
 
     /**  mode + channel + ssd 
      * INPUT : Options - {serial_no:"00:20:60:00:00:28","mode":"SmartAd Model II","lat":104.874934,"lng":33.39856,
@@ -110,38 +22,6 @@
      */
     countlyDevmgr.updateFireware = function(deviceId,cur_ver,latest_ver){
 
-    };
-
-    countlyDevmgr.drawGeoChart = function (options) {
-
-        _periodObj = countlyCommon.periodObj;
-
-        if (options) {
-            if (options.chartElementId) {
-                _chartElementId = options.chartElementId;
-            }
-
-            if (options.height) {
-                _chartOptions.height = options.height;
-
-                //preserve the aspect ratio of the chart if height is given
-                _chartOptions.width = (options.height * 556 / 347);
-            }
-        }
-
-        if (google.visualization) {
-            draw();
-        } else {
-            google.load('visualization', '1', {'packages':['geochart'], callback:draw});
-        }
-    };
-
-    countlyDevmgr.refreshGeoChart = function () {
-        if (google.visualization) {
-            reDraw();
-        } else {
-            google.load('visualization', '1', {'packages':['geochart'], callback:draw});
-        }
     };
 
 
@@ -250,11 +130,11 @@
 
     /**
      * DESCR : create template information by user
-     * INPUT : userId - user id 
+     * INPUT : userid
      *         options - collection of parameters, refer  options defintion in function.
      * OUTPUT : 
      */
-    countlyDevmgr.createTemplateByUser = function(userId, options)
+    countlyDevmgr.createTemplateByUser = function(userid,options)
     {
         /*
         var options  = {
@@ -269,15 +149,46 @@
          return;
     }
 
+    /**
+     * DESCR : update template information by user
+     * INPUT : 
+     *         options - collection of parameters, refer  options defintion in function.
+     * OUTPUT : 
+     */
+    countlyDevmgr.updateTemplateByUser = function(userid,options)
+    {
+
+        /*
+        var options  = {
+            name:"天府软件园模板一",
+            id:1,
+            templates:[
+                        {id:1,condition_temp:"序列号",judgement:"=",input:"00:20:60:00:00:23"},
+                        {id:2,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"},
+                        {id:3,condition_temp:"子网ID号",judgement:"=",input:"534ba01a9d6005b305000009"}
+                        ],
+             params:{wifimode:1,channel:2,ssid:"天府热点"}
+         };
+         */
+    }
+
+    /**
+     * DESCR : delete template information by user
+     * INPUT : 
+     *         options - 
+     * OUTPUT : 
+     */
+    countlyDevmgr.deleteTemplateByUser = function(userid,options)
+    {
+        /*
+        var options  = {
+            name:"天府软件园模板一",
+            id:1
+         */
+    }
+
     countlyDevmgr.getTemplateByUserEx = function(userId)
     {
-        var templates = [ 
-            {id:1,name:"天府软件园模板一"},
-            {id:2,name:"天府软件园模板A区"},
-            {id:3,name:"天府软件园模板B区"},
-            {id:4,name:"天府软件园模板C区"}
-        ];
-
         var temp_items = [
             {   
                 name:"天府软件园模板一",
