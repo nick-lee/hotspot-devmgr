@@ -15,7 +15,7 @@ a:active { color:inherit; }
 
 #sidebar { position:fixed; left:0; width:224px; background-image:url('../images/dashboard/menu_bg.png'); background-position:0 400px; height:100%; z-index:10; user-select:none; }
 #sidebar-top { height:122px; padding-top:11px; background-image:url('../images/dashboard/logo_bg.png'); }
-#sidebar-logo { background-image:url('../images/dashboard/logo.png'); width:144px; height:44px; margin:0 auto; }
+#sidebar-logo { background-image:url('../images/dashboard/logo.png'); width:156px; height:44px; margin:0 auto; }
 #sidebar-app-select { width:170px; height:16px; padding:10px; background-image:url('../images/dashboard/combobox.png'); margin:0 auto; margin-top:21px; cursor:pointer; }
 	#sidebar-app-select:hover { background-position:-190px; }
 	#sidebar-app-select.active { background-position:-380px; }

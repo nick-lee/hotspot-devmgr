@@ -17,7 +17,7 @@
 			<td class="user-full-name"></td>
 			<td class="user-username">
 				<div>
-					<span class="user-email">操作</span>
+					<span class="user-email" data-localize="management-applications.template.operation" ></span>
 					<div class="help-edit" data-localize="management-users.edit"></div>
 					<div class="help-close" data-localize="management-users.close"></div>
 				</div>				
@@ -27,7 +27,7 @@
 
 		<tr class="user-details">			
 			<td colspan="4">
-				<div>
+				<div class="template-list-view" value="{{this.id}}" data="{{this.name}}">
 
 					{{#with this.params}}					
 					<div class="row help-zone-vs " style="background:white" data-help-localize="sidebar.devicemgr.hotspot.config">
@@ -39,7 +39,7 @@
                         <div class="cly-select" style="width:220px;">
 		          	    <div class="select-inner">
 		          	    	<div class="text-container">
-		          	    		<div class="text" id="channel-add-category" data-localize="manaapplications.category.tip" data={{this.wifimode}}>{{wifimode_text this.wifimode}}</div>
+		          	    		<div class="text text_wifimode" id="channel-add-category" data-localize="manaapplications.category.tip" data={{this.wifimode}}>{{wifimode_text this.wifimode}}</div>
 		          	    	</div>
 		          	    	<div class="right combo"></div>
 		          	    </div>
@@ -60,7 +60,7 @@
                             <div class="cly-select" style="width:220px;">
 		          	        <div class="select-inner">
 		          	        	<div class="text-container">
-		          	        		<div class="text" id="mode-add-category" data-localize="manaapplications.category.tip" data={{this.channel}}>{{channel_text this.channel}}</div>
+		          	        		<div class="text text_channel" id="mode-add-category" data-localize="manaapplications.category.tip" data={{this.channel}}>{{channel_text this.channel}}</div>
 		          	        	</div>
 		          	        	<div class="right combo"></div>
 		          	        </div>
@@ -78,14 +78,14 @@
 						<div class="title" data-localize="sidebar.devicemgr.SSID"></div>
 						<div class="detail">
 
-           				<input class="username-text" id="hotspot-name-input" style="position:relative;margin-top:5px;margin-bottom:5px; width:100%;" type="text" value="{{this.ssid}}"/><br/>
+           				<input class="username-text text_ssid" id="hotspot-name-input" style="position:relative;margin-top:5px;margin-bottom:5px; width:100%;" type="text" value="{{this.ssid}}"/><br/>
 						</div>
 					</div>		
 						    
 					{{/with }}
 					
 					{{#eachOfObjectValue this.templates}}
-						 {{#with this}}   
+						{{#with this}}   
 					<div class="row help-zone-vs " style="" data-help-localize="manage-users.full-name">
 						<div class="title" data-localize="management-applications.filter"></div>
 						<div> {{this.id}}</div>
@@ -93,7 +93,7 @@
                             <div class="cly-select" style="width:220px;">
 			                   <div class="select-inner">
 			                   	  <div class="text-container">
-			                   	  	<div class="text" id="channel-add-category" data-localize="manaapplications.  category.tip">{{this.condition_temp}}
+			                   	  	<div class="text text_condition_temp" id="channel-add-category" data-localize="manaapplications.category.tip">{{this.condition_temp}}
 			                   	  	</div>
 			                   	  </div>
 			                   	  <div class="right combo">			                   		
@@ -109,7 +109,7 @@
                             <div class="cly-select" style="width:120px;">
 			                    <div class="select-inner">
 			                    	    <div class="text-container">
-			                    	    	<div class="text" id="channel-add-category" data-localize="manaapplications. category.tip">{{this.judgement}}
+			                    	    	<div class="text text_judgement" id="channel-add-category" data-localize="manaapplications.category.tip">"{{this.judgement}}"
 			                    	    	</div>
 			                    	    </div>
 			                    	<div class="right combo">			                   		
@@ -122,7 +122,7 @@
 			                    </div>
                             </div>   	     
 
-						     <input class="email-text" type="text" value="{{this.input}}"/ style="position:relative;top:-7px;">
+						     <input class="email-text text_input" type="text" value="{{this.input}}"/ style="position:relative;top:-7px;">
 														
 					      	<div class="select-temps" style="position:relative;top:4px;">
 					      	    <input type="hidden" value="" class="app-list"/>
@@ -132,9 +132,9 @@
 					</div>					
 					{{/with}}
 					<div class="button-container">
-						<a class="icon-button light save-user" data-localize="common.save"></a>
+						<a class="icon-button light save-template-list" data-localize="common.save"></a>
 						<a class="icon-button light cancel-user" data-localize="common.cancel"></a>
-						<a class="icon-button red delete-user" data-localize="management-applications.template.delete"></a>
+						<a class="icon-button red delete-template-list" data-localize="management-applications.template.delete"></a>
 					</div>
 
 				{{/eachOfObjectValue}}	
@@ -226,7 +226,7 @@
 			                   </div>
 			                   <div class="select-items square select-items-auto" style="width:220px;">
 			                   	<div class="scrollable">
-			                   		{{> mode-categories }}
+			                   		{{> template-condition-box }}
 			                   	</div>
 			                   </div>
                              </div>   	   
@@ -435,7 +435,6 @@ $(document).ready(function() {
 	}
 
 	function addnewbarClick(){
-		   console.log("trigger addnewbarClick");
 		   var __temp = {};	
 
 		   if(($("#channel-params-category").text()=="") || 
@@ -708,6 +707,75 @@ $(document).ready(function() {
 		});
 	});
 	
+    $(".save-template-list").on("click", function() {
+    	var user_name = $('#menu-username').text();
+    	var update_data = {};
+    	var params = {};
+    	var temps = [];
+    	var temps_items = {};
+    	var temp_list_container = $(this).parent().parent();
+
+		temp_list_container.find("*").each(function(i){
+		    	if($(this).hasClass("template-list-view")){
+		    		console.log("find template list view!!");
+		    	} 	    	
+		    	if($(this).hasClass("text_wifimode")){
+		    		console.log("find text_wifimode!!");
+		    		params.wifimode = $(this).text();
+		    	} 
+		    	if($(this).hasClass("text_channel")){
+		    		console.log("find channel text!!");
+		    		params.channel = $(this).text();
+		    	} 
+		    	if($(this).hasClass("text_ssid")){
+		    		console.log("find text_ssid  text!!");
+		    		params.input = $(this).val();
+		    	} 	
+		    	if($(this).hasClass("text_condition_temp")){
+		    		console.log("find text_condition_temp text!!" + $(this).text());
+		    		temps_items.condition_temp = $(this).text();
+		    	}
+		    	if($(this).hasClass("text_judgement")){
+		    		console.log("find text_judgement text!!" + $(this).text() );
+		    		temps_items.judgement = $(this).text();
+		    	}
+		    	if($(this).hasClass("text_input")){
+		    		console.log("find text_input!!" + $(this).val());
+		    		temps_items.input = $(this).val();
+		    		temps.push(temps_items);
+		    		console.log("temp_items =" + temps_items);
+		    		console.log("temps = " + temps);
+		    	} 
+		    });
+
+            update_data.params = params;
+            update_data.templates = temps;
+            countlyDevmgr.updateTemplateByUser(user_name, update_data);
+
+    });              
+
+
+    $(".delete-template-list").on("click",function(){
+    	console.log("delete template list");
+    	var user_name = $('#menu-username').text();
+    	var temp_list_container = $(this).parent().parent().parent();
+    	var __id = 100000;
+    	var __data = {};
+
+    	temp_list_container.find("*").each(function(i){
+		    if($(this).hasClass("template-list-view")){
+		    	console.log("find template list view!!");
+		    	console.log("value = " + $(this).attr("value"));
+		    	console.log("value = " + $(this).attr("data"));
+		    	__id = $(this).attr("value");
+		    	__data.id = __id;
+		    } 	 
+		});   	
+
+    	countlyDevmgr.deleteTemplateByUser(user_name, __data);
+    	app.activeView.render();
+    });
+
 	$(".save-user").on("click", function() {
 		$("#listof-apps").hide();
 		$(".email-check.green-text").remove();

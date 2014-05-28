@@ -259,8 +259,6 @@
 
         ];               
 
-        //console.log(temps["templates"]);
-        //console.log(temps["params"]);
         var temp=[];
         return temp_items;        
     };

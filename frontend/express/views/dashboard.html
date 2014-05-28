@@ -1,15 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--
-   ______                  __  __     
-  / ____/___  __  ______  / /_/ /_  __
- / /   / __ \/ / / / __ \/ __/ / / / /
-/ /___/ /_/ / /_/ / / / / /_/ / /_/ / 
-\____/\____/\__,_/_/ /_/\__/_/\__, /  
-              http://count.ly/____/   
+  UNICORN Workshop .
 -->
 <html>
 <head>
-	<title>Countly</title> 
+	<title>Unicorn</title> 
 	<meta name="viewport" content="width=device-width, user-scalable=0, maximum-scale=1.0">
 	<link rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/stylesheets/font-awesome/css/font-awesome.min.css" />
@@ -132,12 +127,13 @@
 				<div class="logo" <% if (userOfApps[0]){ %>style="background-image:url('/appimages/<%= userOfApps[0]._id %>.png')"<% } %>></div>
 				<div class="text"><% if (userOfApps[0]){ %><%= userOfApps[0].name %><% } %></div>
 			</div>
-		</div>
+		</div>		
 		<div id="sidebar-menu">
 			<a href="#/" class="item active">
 				<div class="logo dashboard"></div>
 				<div class="text" data-localize="sidebar.dashboard"></div>
 			</a>
+			<!--
 			<a class="item" id="analytics-menu">
 				<div class="logo analytics"></div>
 				<div class="text" data-localize="sidebar.analytics"></div>
@@ -182,6 +178,7 @@
 					<div class="text" data-localize="sidebar.analytics.platforms"></div>
 				</a>
 			</div>
+			-->
 			<!--
             <a class="item" id="engagement-menu">
                 <div class="logo icon-magnet" style="background-image:none; font-size:28px; text-align:center; width:35px; margin-left:14px; line-height:44px;"></div>
@@ -1422,8 +1419,8 @@
 				<div id="dev-nav-title" data-localize="sidebar.devicemgr.hotspot">{{ hotspot_name }}</div>
 				<% if(member['global_admin']) { %>
 				<div style="overflow:hidden; position:absolute; top:19px; right:10px;">
-					<div class="icon-button dark help-zone- vs" data-help-localize="manage-apps.app-add-button" id="add-dev-button">
-						<div class="icon" style="background-image:url('/images/management/wi-fi-18.png'); width:17px; height:18px;"></div>
+					<div class="icon-button dark help-zone- vs" data-help-localize="manage-apps.app-add-button" id="add-dev-button" style="display:none;">
+						<div class="icon" style="background-image:url('/images/management/wi-fi-18.png'); width:17px; height:18px; "></div>
 						<div class="text" data-localize="common.add"></div>
 					</div>
 				</div>

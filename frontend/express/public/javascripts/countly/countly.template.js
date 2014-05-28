@@ -2781,13 +2781,7 @@ window.DeviceMgrView = countlyView.extend({
             });
         });
 
-        $("#config-cancel-btn").click(function(){
-           //$("#hotspot-name-input").val("");
-           //$("#channel-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
-           //$("#channel-add-category").data("value", "");
-           //$("#mode-add-category").text(jQuery.i18n.map["management-applications.category.tip"]);
-           //$("#mode-add-category").data("value", "");    
-        
+        $("#config-cancel-btn").click(function(){       
             var _dev = countlyDevmgr.getCurrentDevice();
             var _string ="";
             if( _dev != null){
@@ -2804,9 +2798,9 @@ window.DeviceMgrView = countlyView.extend({
 
             $(".required").fadeOut().remove();
             var reqSpan = $("<span>").addClass("required").text("*");
-            var wifimode = $("#mode-add-category").data("value");  
+            var wifimode = $("#mode-add-category").text();  
             var hotspotssid = $("#hotspot-name-input").val();
-            var channelName = $("#channel-add-category").data("value"); 
+            var channelName = $("#channel-add-category").text(); 
 
             if (!hotspotssid) {
                 $("#hotspot-name-input").after(reqSpan.clone());
@@ -2823,14 +2817,23 @@ window.DeviceMgrView = countlyView.extend({
                 return false;
             }
 
-            countlyDevmgr.updateDevice(countlyCommon.ACTIVE_DEV,hotspotssid,wifimode,channelName);
+            CountlyHelpers.confirm(jQuery.i18n.map["management-applications.config-apply"], "red", function (result) {
+                if (!result) {
+                    return true;
+                }
+                if(countlyCommon.ACTIVE_DEV != 0){
+                  var _dev = getCurrentDevice(countlyDevmgr.ACTIVE_DEV);
+                  countlyDevmgr.updateDevice(countlyCommon.ACTIVE_DEV,hotspotssid,wifimode,channelName);
+                }
+
+            });
+
+            
 
         });
 
         $("#add-dev-button").click(function () {
             var devName = "Test Hotspot 1";
-            alert("enter button click!")    
-
             $("#dev-management-bar .app-container").removeClass("active");
             $("#dev-management-bar .app-container[data-id='abc']").addClass("active");
             var manageBarApp = $("#manage-new-dev>div").clone();
